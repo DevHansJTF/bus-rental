@@ -59,7 +59,7 @@ export function Testimonials() {
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-50 dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-50 dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
 
-        <div className="flex w-max animate-marquee gap-6 md:gap-8 px-4 group-hover/marquee:[animation-play-state:paused]">
+        <div className="flex w-max animate-marquee gap-6 md:gap-8 px-4">
           {marqueeReviews.map((review, index) => (
             <div
               key={index}

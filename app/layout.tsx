@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css"; // Global styles
 
 const inter = Inter({
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body
         className="font-sans antialiased bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900 overflow-x-hidden relative transition-colors duration-300"
         suppressHydrationWarning
@@ -35,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ></div>
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative z-10">{children}</div>
+          <SmoothScroll>
+            <div className="relative z-10">{children}</div>
+          </SmoothScroll>
         </ThemeProvider>
       </body>
     </html>
