@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css"; // Global styles
 
 const inter = Inter({
@@ -19,28 +20,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} scroll-smooth`} suppressHydrationWarning>
       <body
-        className="font-sans antialiased bg-black text-white selection:bg-white/20 selection:text-white overflow-x-hidden relative"
+        className="font-sans antialiased bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900 overflow-x-hidden relative transition-colors duration-300"
         suppressHydrationWarning
       >
-        {/* Subtle SVG Noise Texture for Premium Feel */}
+        {/* Subtle Noise Texture for Organic Premium Feel */}
         <div
-          className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.04] mix-blend-overlay"
+          className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-multiply"
           style={{
             backgroundImage:
               "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')",
           }}
         ></div>
 
-        {/* Global Glowing Orbs */}
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#0044ff]/15 blur-[150px] rounded-full mix-blend-screen overflow-hidden"></div>
-          <div className="absolute top-[40%] right-[-10%] w-[40%] h-[60%] bg-[#5e00ff]/10 blur-[150px] rounded-full mix-blend-screen overflow-hidden"></div>
-          <div className="absolute bottom-[-10%] left-[20%] w-[40%] h-[40%] bg-[#00e1ff]/10 blur-[120px] rounded-full mix-blend-screen overflow-hidden"></div>
-        </div>
-
-        <div className="relative z-10">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="relative z-10">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

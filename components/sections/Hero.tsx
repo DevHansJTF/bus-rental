@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, Variants } from "motion/react";
-import { ArrowRight, Calendar, Users, MapPin } from "lucide-react";
+import { ArrowRight, Calendar, Users, MapPin, CheckCircle2, ShieldCheck, Star } from "lucide-react";
 import Image from "next/image";
 
 export function Hero() {
@@ -10,7 +10,7 @@ export function Hero() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 200]);
   const scale = useTransform(scrollY, [0, 1000], [1, 1.15]);
-  const opacity = useTransform(scrollY, [0, 600], [0.6, 0]);
+  const opacity = useTransform(scrollY, [0, 600], [0.3, 0]);
 
   // Typography animation variants
   const containerVariants: Variants = {
@@ -35,134 +35,159 @@ export function Hero() {
     <section
       ref={ref}
       id="home"
-      className="relative pt-40 pb-24 lg:pt-56 lg:pb-32 overflow-hidden min-h-[100vh] flex items-center"
+      className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden min-h-[95vh] flex items-center bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300"
     >
-      {/* Parallax Background */}
-      <motion.div style={{ y, scale }} className="absolute inset-0 z-0 h-[100%] w-full transform-gpu origin-top">
+      {/* Background with softer overlay */}
+      <motion.div
+        style={{ y, scale }}
+        className="absolute inset-x-0 top-0 h-[60vh] lg:h-[75vh] w-full transform-gpu origin-top rounded-b-[3rem] lg:rounded-b-[5rem] overflow-hidden"
+      >
         <Image
           src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2938&auto=format&fit=crop"
-          alt="Bus depot from above"
+          alt="Premium comfortable bus interior"
           fill
           className="object-cover object-center"
           priority
           referrerPolicy="no-referrer"
         />
-        <motion.div style={{ opacity }} className="absolute inset-0 bg-black mix-blend-multiply"></motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+        <motion.div
+          style={{ opacity }}
+          className="absolute inset-0 bg-zinc-100 dark:bg-black mix-blend-multiply dark:mix-blend-multiply transition-colors"
+        ></motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-50 dark:from-zinc-950 via-zinc-50/80 dark:via-zinc-950/80 to-transparent transition-colors"></div>
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Text Content */}
-          <motion.div variants={containerVariants} initial="hidden" animate="visible" className="lg:col-span-7">
+          <motion.div variants={containerVariants} initial="hidden" animate="visible" className="lg:col-span-7 pt-10">
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-8 w-fit backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.15)]"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-bold uppercase tracking-widest mb-8 w-fit shadow-sm"
             >
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
-              The Future of Transit
+              Top Rated Premium Transit
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="font-heading text-6xl md:text-8xl font-black text-white leading-[1.05] tracking-tighter mb-6"
+              className="font-heading text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white leading-[1.05] tracking-tight mb-6 transition-colors"
             >
-              Move beyond <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 drop-shadow-[0_0_30px_rgba(59,130,246,0.3)]">
-                boundaries.
-              </span>
+              Elevate your <br />
+              <span className="text-zinc-600 dark:text-zinc-400 transition-colors">group journey.</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-slate-400 text-lg md:text-xl font-medium mb-10 max-w-xl leading-relaxed"
+              className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-medium mb-10 max-w-xl leading-relaxed transition-colors"
             >
-              Experience ultimate group travel with our next-generation fleet. Real-time tracking, unmatched comfort,
-              and a journey elevated.
+              Experience ultimate comfort and reliability with our modern fleet. Perfect for corporate events, tours,
+              and private group travel.
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-wrap gap-4 items-center">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white text-[#020617] px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] inline-flex items-center gap-2 group"
+                className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl hover:bg-zinc-800 dark:hover:bg-white inline-flex items-center gap-2 group"
               >
-                Explore Fleet
+                View Our Fleet
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
-              <button className="px-8 py-4 rounded-2xl font-bold text-lg text-white hover:bg-white/5 transition-colors inline-flex items-center gap-2">
-                Learn More
+              <button className="px-8 py-4 rounded-xl font-bold text-lg text-zinc-900 dark:text-white bg-zinc-200/50 dark:bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 transition-colors inline-flex items-center gap-2">
+                Get a Quote
               </button>
+            </motion.div>
+
+            {/* Trust Badges - New Feature */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-12 flex items-center gap-8 text-zinc-600 dark:text-zinc-400 pt-8 border-t border-zinc-200 dark:border-zinc-800 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-500" />
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">Fully Insured</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex text-amber-400">
+                  <Star className="w-4 h-4 fill-current" />
+                  <Star className="w-4 h-4 fill-current" />
+                  <Star className="w-4 h-4 fill-current" />
+                  <Star className="w-4 h-4 fill-current" />
+                  <Star className="w-4 h-4 fill-current" />
+                </div>
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white tracking-tight">
+                  4.9/5 (2k+ trips)
+                </span>
+              </div>
             </motion.div>
           </motion.div>
 
-          {/* Glassmorphism Booking Console */}
+          {/* Clean Glassmorphism Booking Console */}
           <motion.div
             initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 w-full"
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 w-full mt-10 lg:mt-0"
           >
-            <div className="backdrop-blur-3xl bg-slate-900/40 border border-white/10 p-8 rounded-[2rem] shadow-[0_32px_64px_rgba(0,0,0,0.5)] shadow-blue-900/20 relative overflow-hidden group">
-              {/* Animated Background Gradients in Console */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/20 transition-colors duration-700"></div>
-
+            <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="font-heading text-2xl font-bold text-white tracking-tight">Quick Booking</h3>
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]"></div>
+                <h3 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                  Reserve Now
+                </h3>
+                <div className="hidden md:flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700"></div>
+                  <div className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700"></div>
+                  <div className="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+              <div className="space-y-5">
+                <div className="relative group/input">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
                     <Users className="w-5 h-5" />
                   </div>
                   <input
                     type="text"
-                    placeholder="How many people are traveling?"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                    placeholder="Number of passengers"
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
                   />
                 </div>
 
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <div className="relative group/input">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <input
                     type="text"
-                    placeholder="Where will the bus be used?"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                    placeholder="Pickup location"
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
                   />
                 </div>
 
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <div className="relative group/input">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
                     <Calendar className="w-5 h-5" />
                   </div>
                   <input
                     type="text"
-                    placeholder="How many days do you need the bus?"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                    placeholder="Travel dates (e.g. Oct 12 - Oct 14)"
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
                   />
                 </div>
 
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="mt-6 bg-slate-950/80 backdrop-blur-xl border border-white/5 rounded-2xl p-4 shadow-2xl relative group/card cursor-pointer hover:bg-slate-900 transition-colors"
+                  transition={{ delay: 0.6 }}
+                  className="mt-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 relative group/card cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 opacity-0 group-hover/card:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-                  <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-3">
-                    Recommended For You
-                  </p>
                   <div className="flex gap-4 items-center">
-                    <div className="w-20 h-20 relative rounded-xl overflow-hidden shrink-0 border border-white/10 group-hover/card:scale-105 transition-transform duration-500">
+                    <div className="w-20 h-20 relative rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800 group-hover/card:scale-105 transition-transform duration-500">
                       <Image
                         src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2938&auto=format&fit=crop"
                         alt="Transit Bus"
@@ -172,17 +197,25 @@ export function Hero() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-heading font-bold text-white text-base">Executive Class</h4>
-                      <p className="text-[11px] text-slate-400 mt-1 font-medium">Up to 30 Passengers</p>
-                      <p className="text-[11px] text-slate-400 font-medium">Wi-Fi • Leather • AC</p>
+                      <h4 className="font-heading font-bold text-zinc-900 dark:text-zinc-50 text-base">
+                        Executive Class
+                      </h4>
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 font-medium">
+                        Up to 30 Passengers
+                      </p>
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium flex items-center gap-1 mt-0.5">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Verified Availability
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-white">$120</p>
-                      <p className="text-[9px] uppercase tracking-widest text-slate-500 font-bold">/ hour</p>
+                      <p className="text-lg font-bold text-zinc-900 dark:text-zinc-50">$120</p>
+                      <p className="text-[9px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
+                        / hour
+                      </p>
                     </div>
                   </div>
-                  <button className="w-full mt-5 bg-white/5 hover:bg-white/10 border border-white/5 text-white font-bold py-3 rounded-xl text-sm transition-colors group-hover/card:border-blue-500/30 group-hover/card:text-blue-300">
-                    Select Vehicle
+                  <button className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg">
+                    Check Availability
                   </button>
                 </motion.div>
               </div>

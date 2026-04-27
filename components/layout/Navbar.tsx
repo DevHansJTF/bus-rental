@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Bus, Phone, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,58 +31,66 @@ export function Navbar() {
       initial={{ y: -50, opacity: 0, x: "-50%" }}
       animate={{ y: 0, opacity: 1, x: "-50%" }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-      className={`fixed top-4 left-1/2 z-50 transition-all duration-500 w-[95%] max-w-7xl rounded-full ${
+      className={`fixed top-4 left-1/2 z-50 transition-all duration-500 w-[95%] max-w-7xl rounded-2xl ${
         isScrolled
-          ? "bg-slate-950/70 backdrop-blur-2xl border border-white/10 py-3 px-6 shadow-[0_8px_32px_rgba(0,0,0,0.4)] shadow-blue-900/20"
-          : "bg-white/5 backdrop-blur-lg border border-white/10 py-4 px-6 shadow-2xl"
+          ? "bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 py-3 px-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-black/20"
+          : "bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border border-zinc-200/30 dark:border-zinc-800/30 py-4 px-6 shadow-sm dark:shadow-none"
       }`}
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="#home" className="flex items-center gap-3 group">
-          <div className="relative bg-gradient-to-tr from-blue-600 to-indigo-500 text-white p-2.5 rounded-xl group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-blue-500/30 overflow-hidden">
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+          <div className="relative bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 p-2.5 rounded-xl group-hover:bg-zinc-800 dark:group-hover:bg-white transition-colors duration-300 shadow-sm overflow-hidden">
             <Bus className="w-5 h-5 relative z-10" />
           </div>
-          <span className="font-heading font-bold text-2xl tracking-tighter text-white">
-            Omni<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Bus</span>
+          <span className="font-heading font-bold text-2xl tracking-tight text-zinc-900 dark:text-zinc-50">
+            Omni<span className="text-zinc-500 dark:text-zinc-400">Bus</span>
           </span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-6">
+          <ul className="flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className="text-white hover:text-blue-400 transition-colors text-sm font-medium tracking-wider relative group"
+                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors text-sm font-medium tracking-wide relative group"
                 >
                   {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all group-hover:w-full"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-zinc-900 dark:bg-zinc-100 transition-all group-hover:w-full"></span>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Contact CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-2 text-slate-300">
-            <div className="bg-blue-500/20 p-2 rounded-full text-blue-400">
+        {/* Contact CTA & Theme */}
+        <div className="hidden md:flex items-center gap-6">
+          <ThemeToggle />
+          <div className="flex items-center gap-3 text-zinc-800 dark:text-zinc-200 border-l border-zinc-200 dark:border-zinc-800 pl-6">
+            <div className="bg-zinc-100 dark:bg-zinc-900 p-2.5 rounded-full text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800">
               <Phone className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5">Need help?</span>
-              <span className="font-bold text-white leading-none">09956912242</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-0.5">
+                Need help?
+              </span>
+              <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-none">09956912242</span>
             </div>
           </div>
         </div>
 
         {/* Mobile menu button */}
-        <button className="md:hidden p-2 text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          <ThemeToggle />
+          <button
+            className="p-2 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -91,27 +100,29 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-900 border-b border-white/5 overflow-hidden"
+            className="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800 mt-4 -mx-6 px-6 overflow-hidden rounded-b-2xl shadow-lg dark:shadow-black/20"
           >
-            <div className="px-4 py-4 flex flex-col gap-4">
+            <div className="py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-slate-300 font-medium hover:text-blue-400 transition-colors block"
+                  className="text-zinc-600 dark:text-zinc-400 font-medium hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors block py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
                 </Link>
               ))}
-              <div className="h-px bg-white/10 w-full my-2"></div>
-              <div className="flex items-center gap-3">
-                <div className="bg-blue-500/20 p-2 rounded-full text-blue-400">
+              <div className="h-px bg-zinc-100 dark:bg-zinc-800 w-full my-2"></div>
+              <div className="flex items-center gap-3 pb-4">
+                <div className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-full text-zinc-900 dark:text-zinc-100">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Need help?</span>
-                  <span className="font-bold text-white">09956912242</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    Need help?
+                  </span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">09956912242</span>
                 </div>
               </div>
             </div>
