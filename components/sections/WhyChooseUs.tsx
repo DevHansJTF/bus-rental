@@ -41,7 +41,7 @@ export function WhyChooseUs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
           {/* Left side fixed header approach */}
-          <div className="lg:w-1/2 relative lg:h-[800px]">
+          <div className="lg:w-1/2 relative">
             <div className="sticky top-40 bg-zinc-900/5 dark:bg-white/5 backdrop-blur-xl border border-zinc-900/10 dark:border-white/5 p-10 lg:p-12 rounded-[2.5rem] shadow-2xl transition-colors duration-300">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

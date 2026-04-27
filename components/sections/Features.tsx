@@ -90,17 +90,17 @@ export function Features() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            className="md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-[2rem] bg-zinc-900 border border-zinc-800 shadow-md p-8 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+            className="md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-md p-8 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-800 dark:from-zinc-700 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-50 dark:from-zinc-800 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-white flex items-center justify-center mb-auto shadow-sm group-hover:bg-white group-hover:text-zinc-900 transition-all duration-500 z-10">
+            <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 flex items-center justify-center mb-auto shadow-sm group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900 transition-all duration-500 z-10">
               <Bus className="w-5 h-5" />
             </div>
 
             <div className="mt-8 z-10 relative">
-              <h3 className="text-xl font-heading font-bold text-white mb-2">Premium Comfort</h3>
-              <p className="text-zinc-400 leading-relaxed text-sm">
+              <h3 className="text-xl font-heading font-bold text-zinc-900 dark:text-white mb-2">Premium Comfort</h3>
+              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm">
                 Ergonomic seating, refined climate control, and unmatched legroom on every single trip.
               </p>
             </div>
