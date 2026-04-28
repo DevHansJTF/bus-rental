@@ -1,56 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
-import { Settings, Users, Wind, ArrowRight, ArrowLeft } from "lucide-react";
-
-const fleetData = [
-  {
-    id: 1,
-    type: "Mini Bus",
-    name: "City Sprinter",
-    dailyPrice: 10000,
-    weeklyPrice: 65000,
-    specs: {
-      transmission: "Auto",
-      capacity: "10 Persons",
-      ac: "Air Conditioner",
-    },
-    image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2938&auto=format&fit=crop", // Replace with real bus image if needed
-  },
-  {
-    id: 2,
-    type: "Shuttle Bus",
-    name: "Metro Oxford",
-    dailyPrice: 20000,
-    weeklyPrice: 125000,
-    specs: {
-      transmission: "Auto",
-      capacity: "30 Persons",
-      ac: "Air Conditioner",
-    },
-    image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2938&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    type: "Mini Bus",
-    name: "Transit Van",
-    dailyPrice: 12000,
-    weeklyPrice: 75000,
-    specs: {
-      transmission: "Auto",
-      capacity: "15 Persons",
-      ac: "Air Conditioner",
-    },
-    image: "https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?q=80&w=2938&auto=format&fit=crop",
-  },
-];
+import { Settings, Users, Wind, ArrowRight, ArrowLeft, X, Check, CheckCircle2 } from "lucide-react";
+import { fleetData } from "@/lib/data";
 
 export function Fleet() {
   const [isWeekly, setIsWeekly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [direction, setDirection] = useState(0);
+  const [selectedBus, setSelectedBus] = useState<(typeof fleetData)[0] | null>(null);
 
   const nextSlide = () => {
     setDirection(1);
@@ -71,6 +31,34 @@ export function Fleet() {
     }
     return cards;
   };
+
+  const handleBookNow = () => {
+    setSelectedBus(null);
+    document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
+
+    // Slight delay to allow smooth scroll, then pulse the console
+    setTimeout(() => {
+      const consoleEl = document.getElementById("booking-console");
+      if (consoleEl) {
+        consoleEl.classList.add("ring-4", "ring-emerald-500/50", "transition-all", "duration-500");
+        setTimeout(() => {
+          consoleEl.classList.remove("ring-4", "ring-emerald-500/50");
+        }, 1500);
+      }
+    }, 800);
+  };
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedBus) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedBus]);
 
   return (
     <section
@@ -188,20 +176,30 @@ export function Fleet() {
                       className={`bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden border transition-colors duration-400 w-full max-w-sm shrink-0 ${isActive ? "border-zinc-200 dark:border-zinc-700 shadow-2xl shadow-black/5 dark:shadow-black/40 ring-1 ring-zinc-900/5 dark:ring-white/5" : "border-zinc-100 dark:border-zinc-800 shadow-sm pointer-events-none"}`}
                     >
                       {/* Image Area */}
-                      <div className="relative h-56 bg-zinc-50 dark:bg-zinc-950 overflow-hidden group">
-                        <Image
-                          src={bus.image}
-                          alt={bus.name}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          referrerPolicy="no-referrer"
-                        />
+                      <div
+                        className="relative h-56 bg-zinc-50 dark:bg-zinc-950 overflow-hidden group cursor-pointer"
+                        onClick={() => isActive && setSelectedBus(bus)}
+                      >
+                        <div className="absolute inset-0">
+                          <Image
+                            src={bus.image}
+                            alt={bus.name}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                          <div className="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                            <p className="font-bold mb-1 tracking-wide">Quick View</p>
-                            <p className="text-sm text-zinc-200">
-                              Premium seating, onboard entertainment, wide panoramic windows.
-                            </p>
+                          <div className="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 flex items-center justify-between w-full">
+                            <div>
+                              <p className="font-bold tracking-wide">Quick View</p>
+                              <p className="text-sm text-zinc-200 line-clamp-1">
+                                {bus.description || "Premium seating, onboard entertainment."}
+                              </p>
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0">
+                              <ArrowRight className="w-4 h-4 text-white" />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -249,7 +247,10 @@ export function Fleet() {
                           </div>
                         </div>
 
-                        <button className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-900 dark:hover:border-white hover:bg-zinc-900 dark:hover:bg-white text-zinc-900 dark:text-white hover:text-white dark:hover:text-zinc-900 font-bold py-4 rounded-xl transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow-md">
+                        <button
+                          onClick={handleBookNow}
+                          className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-900 dark:hover:border-white hover:bg-zinc-900 dark:hover:bg-white text-zinc-900 dark:text-white hover:text-white dark:hover:text-zinc-900 font-bold py-4 rounded-xl transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow-md"
+                        >
                           Book Now
                         </button>
                       </div>
@@ -261,6 +262,126 @@ export function Fleet() {
           </div>
         </div>
       </div>
+
+      {/* Quick View Modal */}
+      <AnimatePresence>
+        {selectedBus && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-zinc-900/40 dark:bg-black/60 backdrop-blur-sm cursor-pointer"
+              onClick={() => setSelectedBus(null)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-4xl bg-white dark:bg-zinc-950 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+            >
+              <button
+                onClick={() => setSelectedBus(null)}
+                className="absolute top-6 right-6 z-20 w-10 h-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Image Section */}
+              <div className="relative w-full md:w-1/2 h-64 md:h-auto shrink-0 bg-zinc-100 dark:bg-zinc-900">
+                <Image
+                  src={selectedBus.image}
+                  alt={selectedBus.name}
+                  fill
+                  className="object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/* Content Section */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="p-8 md:p-12 flex flex-col justify-center overflow-y-auto w-full"
+              >
+                <div className="mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Available Now
+                  </div>
+                  <h3 className="font-heading font-bold text-4xl text-zinc-900 dark:text-white tracking-tight mb-2">
+                    {selectedBus.name}
+                  </h3>
+                  <p className="text-zinc-500 dark:text-zinc-400 font-medium text-lg">{selectedBus.type}</p>
+                </div>
+
+                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+                  {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
+                  ensuring a comfortable journey for your entire group.
+                </p>
+
+                <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-10">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                      <Users className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Capacity</p>
+                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.capacity}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                      <Wind className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Climate Control</p>
+                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.ac}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                      <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Transmission</p>
+                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.transmission}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                      <Check className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Entertainment</p>
+                      <p className="font-bold text-zinc-900 dark:text-white">Included</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
+                  <div className="w-full sm:w-auto text-center sm:text-left mr-auto">
+                    <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">Starting from</p>
+                    <p className="font-heading font-bold text-3xl text-zinc-900 dark:text-white">
+                      &#8369;{selectedBus.dailyPrice.toLocaleString()}{" "}
+                      <span className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">/day</span>
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleBookNow}
+                    className="w-full sm:w-auto bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
+                  >
+                    Proceed to Booking
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

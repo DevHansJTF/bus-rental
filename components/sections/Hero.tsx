@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, Variants } from "motion/react";
-import { ArrowRight, Calendar, Users, MapPin, CheckCircle2, ShieldCheck, Star } from "lucide-react";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform, Variants, AnimatePresence } from "motion/react";
+import { ArrowRight, Calendar, Users, MapPin, CheckCircle2, ShieldCheck, Star, AlertCircle } from "lucide-react";
 import Image from "next/image";
+import { fleetData } from "@/lib/data";
 
 export function Hero() {
   const ref = useRef(null);
@@ -11,6 +12,23 @@ export function Hero() {
   const y = useTransform(scrollY, [0, 1000], [0, 200]);
   const scale = useTransform(scrollY, [0, 1000], [1, 1.15]);
   const opacity = useTransform(scrollY, [0, 600], [0.3, 0]);
+
+  const [passengers, setPassengers] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [dates, setDates] = useState<string>("");
+
+  // Derived state to determine the recommended bus
+  const numPassengers = parseInt(passengers);
+  const isPassengerInvalid = passengers.length > 0 && (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 30);
+
+  const recommendedBus =
+    !isNaN(numPassengers) && numPassengers > 0 && numPassengers <= 30
+      ? numPassengers <= 10
+        ? fleetData.find((b) => b.id === 1) || fleetData[0]
+        : numPassengers <= 15
+          ? fleetData.find((b) => b.id === 3) || fleetData[1]
+          : fleetData.find((b) => b.id === 2) || fleetData[2]
+      : fleetData[1]; // Default to Metro Oxford
 
   // Typography animation variants
   const containerVariants: Variants = {
@@ -134,7 +152,10 @@ export function Hero() {
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 w-full mt-10 lg:mt-0"
           >
-            <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors">
+            <div
+              id="booking-console"
+              className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors"
+            >
               <div className="flex items-center justify-between mb-8">
                 <h3 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
                   Reserve Now
@@ -147,15 +168,37 @@ export function Hero() {
               </div>
 
               <div className="space-y-5">
-                <div className="relative group/input">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
-                    <Users className="w-5 h-5" />
+                <div>
+                  <div className="relative group/input">
+                    <div
+                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100"}`}
+                    >
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <input
+                      type="number"
+                      min={1}
+                      max={30}
+                      placeholder="Number of passengers"
+                      value={passengers}
+                      onChange={(e) => setPassengers(e.target.value)}
+                      className={`w-full bg-zinc-50 dark:bg-zinc-950 border hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 transition-all ${isPassengerInvalid ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/20" : "border-zinc-200 dark:border-zinc-800 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"}`}
+                    />
                   </div>
-                  <input
-                    type="text"
-                    placeholder="Number of passengers"
-                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
-                  />
+
+                  <AnimatePresence>
+                    {isPassengerInvalid && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        className="text-red-500 text-xs font-medium flex items-center gap-1.5 overflow-hidden"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        Please enter a valid number between 1 and 30 passengers.
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div className="relative group/input">
@@ -165,6 +208,8 @@ export function Hero() {
                   <input
                     type="text"
                     placeholder="Pickup location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
                   />
                 </div>
@@ -176,48 +221,84 @@ export function Hero() {
                   <input
                     type="text"
                     placeholder="Travel dates (e.g. Oct 12 - Oct 14)"
+                    value={dates}
+                    onChange={(e) => setDates(e.target.value)}
                     className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
                   />
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className="mt-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 relative group/card cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
-                >
-                  <div className="flex gap-4 items-center">
-                    <div className="w-20 h-20 relative rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800 group-hover/card:scale-105 transition-transform duration-500">
-                      <Image
-                        src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=2938&auto=format&fit=crop"
-                        alt="Transit Bus"
-                        fill
-                        className="object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-heading font-bold text-zinc-900 dark:text-zinc-50 text-base">
-                        Executive Class
-                      </h4>
-                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 font-medium">
-                        Up to 30 Passengers
+                <AnimatePresence mode="wait">
+                  {(passengers || location || dates) && !isPassengerInvalid ? (
+                    <motion.div
+                      key="recommendation"
+                      initial={{ opacity: 0, height: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, height: "auto", scale: 1 }}
+                      exit={{ opacity: 0, height: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="mt-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 relative group/card cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all origin-top overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-bl-xl shadow-sm z-10">
+                        Recommended match
+                      </div>
+                      <div className="flex gap-4 items-center">
+                        <div className="w-20 h-20 relative rounded-xl overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800 group-hover/card:scale-105 transition-transform duration-500">
+                          <Image
+                            src={recommendedBus.image}
+                            alt={recommendedBus.name}
+                            fill
+                            sizes="80px"
+                            className="object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-heading font-bold text-zinc-900 dark:text-zinc-50 text-base line-clamp-1">
+                            {recommendedBus.name}
+                          </h4>
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 font-medium">
+                            {recommendedBus.specs.capacity}
+                          </p>
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium flex items-center gap-1 mt-0.5">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Verified Availability
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
+                            ${(recommendedBus.dailyPrice / 1000).toFixed(0)}k
+                          </p>
+                          <p className="text-[9px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
+                            / day
+                          </p>
+                        </div>
+                      </div>
+                      <button className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg">
+                        {passengers && location && dates ? "Book Now" : "Check Availability"}
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="empty-state"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="mt-6 origin-top overflow-hidden"
+                    >
+                      <button
+                        disabled={isPassengerInvalid}
+                        className="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-4 rounded-xl text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0"
+                      >
+                        Search Available Vehicles
+                        {!isPassengerInvalid && (
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        )}
+                      </button>
+                      <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-3 flex items-center justify-center gap-1.5 font-medium">
+                        <ShieldCheck className="w-3.5 h-3.5" /> Best price guaranteed
                       </p>
-                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium flex items-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Verified Availability
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-zinc-900 dark:text-zinc-50">$120</p>
-                      <p className="text-[9px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
-                        / hour
-                      </p>
-                    </div>
-                  </div>
-                  <button className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg">
-                    Check Availability
-                  </button>
-                </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </motion.div>
