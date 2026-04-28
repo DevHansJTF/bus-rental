@@ -66,7 +66,8 @@ export function Hero() {
 
   // Derived state to determine the recommended bus
   const numPassengers = parseInt(passengers);
-  const isPassengerInvalid = passengers.length > 0 && (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 30);
+  const isPassengerInvalid =
+    passengers.length > 0 ? isNaN(numPassengers) || numPassengers < 1 || numPassengers > 30 : false;
 
   const filledCount = (passengers ? 1 : 0) + (location ? 1 : 0) + (startDate ? 1 : 0) + (endDate ? 1 : 0);
 
@@ -247,12 +248,12 @@ export function Hero() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="relative group/input">
                     <div
-                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 group-hover/input:text-zinc-900 dark:group-hover/input:text-zinc-100"}`}
+                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"}`}
                     >
                       <Users className="w-5 h-5" />
                     </div>
                     <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500">
-                      Guests
+                      Passengers
                     </label>
                     <input
                       type="number"
@@ -315,7 +316,7 @@ export function Hero() {
                       className="text-red-500 text-[11px] font-bold uppercase tracking-wide flex items-center gap-2 overflow-hidden px-1"
                     >
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                      Invalid passenger count (1-30)
+                      {numPassengers < 1 || isNaN(numPassengers) ? "Minimum is 1" : "Max capacity is 30"}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -455,8 +456,15 @@ export function Hero() {
                         </div>
                       </div>
                       <button
-                        onClick={handleRecommendationAction}
-                        className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg"
+                        type="button"
+                        onTouchStart={() => {
+                          handleRecommendationAction();
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleRecommendationAction();
+                        }}
+                        className="w-full relative z-10 mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg"
                       >
                         {passengers && location && startDate && endDate ? "Book Now" : "Check Availability"}
                       </button>
@@ -474,9 +482,16 @@ export function Hero() {
                       className="mt-6 origin-top overflow-hidden"
                     >
                       <button
+                        type="button"
                         disabled={isPassengerInvalid}
-                        onClick={scrollToFleet}
-                        className="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-4 rounded-xl text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0"
+                        onTouchStart={() => {
+                          if (!isPassengerInvalid) scrollToFleet();
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          scrollToFleet();
+                        }}
+                        className="w-full relative z-10 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-4 rounded-xl text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0"
                       >
                         Search Available Vehicles
                         {!isPassengerInvalid && (

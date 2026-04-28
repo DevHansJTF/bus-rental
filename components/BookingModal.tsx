@@ -25,6 +25,20 @@ import { RemoveConfirmModal } from "./RemoveConfirmModal";
 export function BookingModal() {
   const { isModalOpen, setIsModalOpen, selectedBusForBooking, setSelectedBusForBooking } = useBooking();
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   const handleClose = () => {
     setIsModalOpen(false);
   };
@@ -46,7 +60,7 @@ export function BookingModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-6xl h-[90vh] bg-zinc-950 text-white rounded-[2rem] border border-zinc-800 shadow-2xl overflow-hidden flex flex-col md:flex-row"
+            className="relative w-full max-w-6xl h-[85vh] sm:h-[90vh] bg-zinc-950 text-white rounded-[2rem] border border-zinc-800 shadow-2xl overflow-hidden flex flex-col md:flex-row font-sans"
           >
             <BookingModalContent handleClose={handleClose} />
           </motion.div>
@@ -95,8 +109,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
   };
 
   const numLocalPassengers = parseInt(localPassengers);
-  const isLocalPassengerInvalid =
-    localPassengers.length > 0 && (isNaN(numLocalPassengers) || numLocalPassengers < 1 || numLocalPassengers > 30);
+  const isLocalPassengerInvalid = isNaN(numLocalPassengers) || numLocalPassengers < 1 || numLocalPassengers > 30;
 
   // Sync back to context only when local changes occur
   useEffect(() => {
@@ -134,6 +147,8 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
   const [showReturnModal, setShowReturnModal] = useState(false);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
 
+  const [mobilePage, setMobilePage] = useState<1 | 2>(1);
+
   // We reuse showLocSuggestions for the new modal
   // const [showLocSuggestions, setShowLocSuggestions] = useState(false); // already defined above!
 
@@ -146,9 +161,26 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
     postalCode: "",
   });
 
+  const isCartComplete = !!(
+    startDate &&
+    endDate &&
+    localLocation.trim() &&
+    localPassengers.trim() !== "" &&
+    !isLocalPassengerInvalid
+  );
+
+  const isFormComplete = !!(
+    formData.fullName.trim() &&
+    formData.email.trim() &&
+    formData.address.trim() &&
+    formData.city.trim() &&
+    formData.postalCode.trim() &&
+    isCartComplete
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!confirmed) return;
+    if (!confirmed || !isFormComplete) return;
 
     setIsSubmitting(true);
     // Simulate API call
@@ -181,7 +213,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
           <div className="relative group/input max-w-[200px]">
             <label className="flex items-center gap-2 mb-1.5 px-0.5">
               <Users className="w-3 h-3 text-zinc-500" />
-              <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-zinc-500">Guests</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-zinc-500">Passengers</span>
             </label>
             <input
               type="number"
@@ -192,6 +224,21 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
               onChange={(e) => setLocalPassengers(e.target.value)}
               className={`w-full bg-zinc-950/40 border rounded-xl px-4 py-3 text-xs focus:outline-none transition-all font-medium ${isLocalPassengerInvalid ? "border-red-500/50 focus:border-red-500 text-red-500" : "border-zinc-800/60 focus:border-white text-zinc-200 focus:bg-zinc-900"}`}
             />
+            <AnimatePresence mode="wait">
+              {isLocalPassengerInvalid && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                  className="text-red-500 text-[10px] sm:text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 overflow-hidden"
+                >
+                  <AlertCircle className="w-3 h-3 shrink-0" />{" "}
+                  <span className="truncate">
+                    {numLocalPassengers < 1 || isNaN(numLocalPassengers) ? "Minimum is 1" : "Max capacity is 30"}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -242,7 +289,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
             <h3 className="text-xl font-bold mb-2">No vehicles available</h3>
             <p className="text-zinc-500 max-w-sm mb-6">
               We don&apos;t have any single vehicle that can accommodate {numLocalPassengers} passengers. Please reduce
-              the number of guests or contact us for a custom fleet arrangement.
+              the number of passengers or contact us for a custom fleet arrangement.
             </p>
             <button
               onClick={() => {
@@ -268,8 +315,10 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
       </button>
 
       {/* Left Column: Your Selection (The "Cart") */}
-      <div className="flex-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-zinc-900 overflow-y-auto">
-        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 tracking-tight">Your Cart</h2>
+      <div
+        className={`flex-1 p-6 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-zinc-900 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 2 ? "hidden md:block" : "block"}`}
+      >
+        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 tracking-tight">Chosen Bus</h2>
 
         <div className="space-y-8">
           <div className="flex gap-6 items-start p-6 bg-zinc-900/30 rounded-2xl border border-zinc-900 hover:border-zinc-800 transition-colors group">
@@ -297,7 +346,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                 <div className="relative group/input">
                   <label className="flex items-center gap-2 mb-1.5 px-0.5">
                     <Users className="w-3 h-3 text-zinc-500" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-zinc-500">Guests</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-zinc-500">Passengers</span>
                   </label>
                   <input
                     type="number"
@@ -310,7 +359,9 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                   {isLocalPassengerInvalid && (
                     <div className="absolute -bottom-5 left-2 flex flex-row items-center space-x-1 text-red-500 font-bold z-10 pointer-events-none scale-90 origin-left sm:hidden">
                       <AlertCircle className="w-3 h-3" />
-                      <span className="text-[10px] leading-tight">Invalid passenger count (1-30)</span>
+                      <span className="text-[10px] leading-tight">
+                        {numLocalPassengers < 1 || isNaN(numLocalPassengers) ? "Minimum is 1" : "Max capacity is 30"}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -319,7 +370,9 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                   {isLocalPassengerInvalid && (
                     <div className="flex items-center gap-1.5 text-red-500 font-bold max-sm:hidden">
                       <AlertCircle className="w-3.5 h-3.5" />
-                      <span className="text-xs">Invalid passenger count (1-30)</span>
+                      <span className="text-xs">
+                        {numLocalPassengers < 1 || isNaN(numLocalPassengers) ? "Minimum is 1" : "Max capacity is 30"}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -417,11 +470,25 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
               </p>
             </div>
           </div>
+
+          <div className="pt-8 md:hidden">
+            <button
+              type="button"
+              disabled={!isCartComplete}
+              onClick={() => setMobilePage(2)}
+              className="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-5 rounded-full shadow-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed group/btn"
+            >
+              <span className="tracking-tight uppercase text-xs">Next</span>
+              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Right Column: Finalize Request (The Form) */}
-      <div className="w-full md:w-[450px] bg-zinc-900/50 p-8 md:p-12 overflow-y-auto">
+      <div
+        className={`w-full md:w-[450px] bg-zinc-900/50 p-6 sm:p-8 md:p-12 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 1 ? "hidden md:block" : "block"}`}
+      >
         {showSuccess ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -444,7 +511,15 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
           </motion.div>
         ) : (
           <>
-            <div className="mb-10">
+            <div className="mb-10 relative">
+              <button
+                type="button"
+                onClick={() => setMobilePage(1)}
+                className="md:hidden text-xs text-zinc-400 hover:text-white flex items-center gap-2 mb-6 font-bold uppercase tracking-wider transition-colors"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" />
+                Back to Chosen Bus
+              </button>
               <h3 className="font-heading text-3xl font-bold tracking-tight mb-3">Finalize Request</h3>
               <p className="text-sm text-zinc-400 leading-relaxed font-medium">
                 Provide your details to initiate the acquisition process. A dedicated concierge will contact you with a
@@ -524,14 +599,14 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                 </p>
                 <button
                   type="submit"
-                  disabled={!confirmed || isSubmitting || isLocalPassengerInvalid}
-                  className="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-5 rounded-full shadow-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-30 group/btn"
+                  disabled={!confirmed || isSubmitting || !isFormComplete}
+                  className="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-5 rounded-full shadow-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-30 disabled:cursor-not-allowed group/btn"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-zinc-950/20 border-t-zinc-950 rounded-full animate-spin"></div>
                   ) : (
                     <>
-                      <span className="tracking-tight uppercase text-xs">Submit Inquiry</span>
+                      <span className="tracking-tight uppercase text-xs">Submit</span>
                       <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </>
                   )}

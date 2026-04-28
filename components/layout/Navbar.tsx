@@ -19,11 +19,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "/#home" },
-    { name: "Services", href: "/#features" },
-    { name: "Fleet", href: "/#fleet" },
-    { name: "About Us", href: "/#about" },
-    { name: "Contact Us", href: "/#contact" },
+    { name: "Home", href: "#home" },
+    { name: "Services", href: "#features" },
+    { name: "Fleet", href: "#fleet" },
+    { name: "About Us", href: "#about" },
+    { name: "Contact Us", href: "#contact" },
   ];
 
   return (
@@ -39,27 +39,27 @@ export function Navbar() {
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <Link href="/#home" className="flex items-center gap-3 group">
+        <a href="#home" className="flex items-center gap-3 group">
           <div className="relative bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 p-2.5 rounded-xl group-hover:bg-zinc-800 dark:group-hover:bg-white transition-colors duration-300 shadow-sm overflow-hidden">
             <Bus className="w-5 h-5 relative z-10" />
           </div>
           <span className="font-heading font-bold text-2xl tracking-tight text-zinc-900 dark:text-zinc-50">
             Omni<span className="text-zinc-500 dark:text-zinc-400">Bus</span>
           </span>
-        </Link>
+        </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link
+                <a
                   href={link.href}
                   className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors text-sm font-medium tracking-wide relative group"
                 >
                   {link.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-zinc-900 dark:bg-zinc-100 transition-all group-hover:w-full"></span>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
@@ -104,14 +104,14 @@ export function Navbar() {
           >
             <div className="py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.name}
                   href={link.href}
                   className="text-zinc-600 dark:text-zinc-400 font-medium hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors block py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
-                </Link>
+                </a>
               ))}
               <div className="h-px bg-zinc-100 dark:bg-zinc-800 w-full my-2"></div>
               <div className="flex items-center gap-3 pb-4">
