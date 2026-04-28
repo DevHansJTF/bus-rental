@@ -48,7 +48,7 @@ export function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-heading font-bold text-zinc-900 dark:text-white mb-6 tracking-tight"
+          className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-zinc-900 dark:text-white mb-6 tracking-tight"
         >
           Loved by <span className="text-zinc-500 dark:text-zinc-400">everyone.</span>
         </motion.h2>

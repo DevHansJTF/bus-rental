@@ -19,11 +19,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Services", href: "#features" },
-    { name: "Fleet", href: "#fleet" },
-    { name: "About Us", href: "#about" },
-    { name: "Contact Us", href: "#contact" },
+    { name: "Home", href: "/#home" },
+    { name: "Services", href: "/#features" },
+    { name: "Fleet", href: "/#fleet" },
+    { name: "About Us", href: "/#about" },
+    { name: "Contact Us", href: "/#contact" },
   ];
 
   return (
@@ -39,7 +39,7 @@ export function Navbar() {
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <Link href="#home" className="flex items-center gap-3 group">
+        <Link href="/#home" className="flex items-center gap-3 group">
           <div className="relative bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 p-2.5 rounded-xl group-hover:bg-zinc-800 dark:group-hover:bg-white transition-colors duration-300 shadow-sm overflow-hidden">
             <Bus className="w-5 h-5 relative z-10" />
           </div>

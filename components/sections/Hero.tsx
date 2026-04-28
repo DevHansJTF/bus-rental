@@ -13,6 +13,7 @@ import {
   AlertCircle,
   ChevronDown,
   Search,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import { fleetData, POPULAR_LOCATIONS } from "@/lib/data";
@@ -67,6 +68,8 @@ export function Hero() {
   const numPassengers = parseInt(passengers);
   const isPassengerInvalid = passengers.length > 0 && (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 30);
 
+  const filledCount = (passengers ? 1 : 0) + (location ? 1 : 0) + (startDate ? 1 : 0) + (endDate ? 1 : 0);
+
   const recommendedBus =
     !isNaN(numPassengers) && numPassengers > 0 && numPassengers <= 30
       ? fleetData.find((b) => {
@@ -91,7 +94,7 @@ export function Hero() {
   };
 
   const handleGetAQuote = () => {
-    setSelectedBusForBooking(recommendedBus);
+    setSelectedBusForBooking(null);
     setIsModalOpen(true);
   };
 
@@ -157,26 +160,29 @@ export function Hero() {
 
             <motion.h1
               variants={itemVariants}
-              className="font-heading text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white leading-[1.05] tracking-tight mb-6 transition-colors"
+              className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white leading-[1.05] tracking-tight mb-4 sm:mb-6 transition-colors"
             >
-              Elevate your <br />
+              Elevate your <br className="hidden sm:block" />
               <span className="text-zinc-600 dark:text-zinc-400 transition-colors">group journey.</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-medium mb-10 max-w-xl leading-relaxed transition-colors"
+              className="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg md:text-xl font-medium mb-8 sm:mb-10 max-w-xl leading-relaxed transition-colors"
             >
               Experience ultimate comfort and reliability with our modern fleet. Perfect for corporate events, tours,
               and private group travel.
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 items-center">
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-start sm:items-center"
+            >
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={scrollToFleet}
-                className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl hover:bg-zinc-800 dark:hover:bg-white inline-flex items-center gap-2 group"
+                className="w-full sm:w-auto justify-center bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg transition-all shadow-xl hover:shadow-2xl hover:bg-zinc-800 dark:hover:bg-white inline-flex items-center gap-2 group"
               >
                 View Our Fleet
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -184,7 +190,7 @@ export function Hero() {
 
               <button
                 onClick={handleGetAQuote}
-                className="px-8 py-4 rounded-xl font-bold text-lg text-zinc-900 dark:text-white bg-zinc-200/50 dark:bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 transition-colors inline-flex items-center gap-2"
+                className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg text-zinc-900 dark:text-white bg-zinc-200/50 dark:bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 transition-colors inline-flex items-center gap-2"
               >
                 Get a Quote
               </button>
@@ -219,14 +225,14 @@ export function Hero() {
             initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 w-full mt-10 lg:mt-0"
+            className="lg:col-span-5 w-full mt-6 sm:mt-10 lg:mt-0"
           >
             <div
               id="booking-console"
-              className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors"
+              className="bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors"
             >
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+              <div className="flex items-center justify-between mb-6 sm:mb-8">
+                <h3 className="font-heading text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
                   Reserve Now
                 </h3>
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg">
@@ -237,11 +243,11 @@ export function Hero() {
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="relative group/input col-span-2 sm:col-span-1">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="relative group/input">
                     <div
-                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100"}`}
+                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 group-hover/input:text-zinc-900 dark:group-hover/input:text-zinc-100"}`}
                     >
                       <Users className="w-5 h-5" />
                     </div>
@@ -255,15 +261,24 @@ export function Hero() {
                       placeholder="Total Persons"
                       value={passengers}
                       onChange={(e) => setPassengers(e.target.value)}
-                      className={`w-full bg-zinc-50 dark:bg-zinc-950 border hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-sm focus:outline-none focus:ring-2 transition-all ${isPassengerInvalid ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/20" : "border-zinc-200 dark:border-zinc-800 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"}`}
+                      className={`w-full bg-zinc-50 dark:bg-zinc-950 border hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-sm focus:outline-none focus:ring-2 transition-all ${isPassengerInvalid ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/20" : "border-zinc-200 dark:border-zinc-800 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"}`}
                     />
+                    {passengers && (
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20"
+                        onClick={() => setPassengers("")}
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
 
-                  <div className="relative group/input col-span-2 sm:col-span-1">
+                  <div className="relative group/input">
                     <button
                       type="button"
                       onClick={() => setShowLocationModal(true)}
-                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <MapPin className="w-5 h-5" />
@@ -272,10 +287,21 @@ export function Hero() {
                         Pickup
                       </label>
                       <div
-                        className={`text-sm font-medium line-clamp-1 ${location ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
+                        className={`text-sm font-medium line-clamp-1 ${location ? "text-zinc-900 dark:text-zinc-100 pr-6" : "text-zinc-300 dark:text-zinc-700"}`}
                       >
                         {location || "Enter Landmark"}
                       </div>
+                      {location && (
+                        <div
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLocation("");
+                          }}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </div>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -294,12 +320,12 @@ export function Hero() {
                   )}
                 </AnimatePresence>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="relative group/input">
                     <button
                       type="button"
                       onClick={() => setShowDepartureModal(true)}
-                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <Calendar className="w-5 h-5" />
@@ -308,10 +334,21 @@ export function Hero() {
                         Departure
                       </label>
                       <div
-                        className={`text-sm font-medium line-clamp-1 ${startDate ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
+                        className={`text-sm font-medium line-clamp-1 ${startDate ? "text-zinc-900 dark:text-zinc-100 pr-6" : "text-zinc-300 dark:text-zinc-700"}`}
                       >
                         {startDate ? formatDateTime(startDate) : "Select time"}
                       </div>
+                      {startDate && (
+                        <div
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setStartDate(null);
+                          }}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </div>
+                      )}
                     </button>
                   </div>
 
@@ -319,7 +356,7 @@ export function Hero() {
                     <button
                       type="button"
                       onClick={() => setShowReturnModal(true)}
-                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <Calendar className="w-5 h-5" />
@@ -328,16 +365,50 @@ export function Hero() {
                         Return
                       </label>
                       <div
-                        className={`text-sm font-medium line-clamp-1 ${endDate ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
+                        className={`text-sm font-medium line-clamp-1 ${endDate ? "text-zinc-900 dark:text-zinc-100 pr-6" : "text-zinc-300 dark:text-zinc-700"}`}
                       >
                         {endDate ? formatDateTime(endDate) : "Select time"}
                       </div>
+                      {endDate && (
+                        <div
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEndDate(null);
+                          }}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </div>
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <AnimatePresence mode="wait">
-                  {(passengers || location || startDate || endDate) && !isPassengerInvalid ? (
+                  {filledCount >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                      className="flex justify-end overflow-hidden"
+                    >
+                      <button
+                        onClick={() => {
+                          setPassengers("");
+                          setLocation("");
+                          setStartDate(null);
+                          setEndDate(null);
+                        }}
+                        className="text-[10px] uppercase font-bold tracking-widest text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 py-1.5 pl-2.5 pr-3 rounded-full flex items-center gap-1.5 transition-all"
+                      >
+                        <X className="w-3 h-3" /> Clear All Filters
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                  {passengers && !isPassengerInvalid ? (
                     <motion.div
                       key="recommendation"
                       initial={{ opacity: 0, y: 20 }}
@@ -434,7 +505,12 @@ export function Hero() {
       <DateTimeModal
         isOpen={showDepartureModal}
         onClose={() => setShowDepartureModal(false)}
-        onSelect={setStartDate}
+        onSelect={(date) => {
+          setStartDate(date);
+          if (endDate && date >= endDate) {
+            setEndDate(null);
+          }
+        }}
         initialDate={startDate}
         title="Select Departure"
       />

@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/lib/BookingContext";
-import { POPULAR_LOCATIONS } from "@/lib/data";
+import { fleetData, POPULAR_LOCATIONS } from "@/lib/data";
 import { LocationSearchModal } from "./LocationSearchModal";
 import { DateTimeModal } from "./DateTimeModal";
 import { RemoveConfirmModal } from "./RemoveConfirmModal";
@@ -31,7 +31,7 @@ export function BookingModal() {
 
   return (
     <AnimatePresence>
-      {isModalOpen && selectedBusForBooking && (
+      {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
           <motion.div
             initial={{ opacity: 0 }}
@@ -158,7 +158,105 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
     }, 2000);
   };
 
-  if (!selectedBusForBooking) return null;
+  if (!selectedBusForBooking) {
+    const validPassengers = !isNaN(numLocalPassengers) && numLocalPassengers > 0 && numLocalPassengers <= 30;
+    const filteredFleetData = fleetData.filter((bus) => {
+      const cap = parseInt(bus.specs.capacity) || 0;
+      return validPassengers ? cap >= numLocalPassengers : true;
+    });
+
+    return (
+      <div className="flex-1 p-8 md:p-12 overflow-y-auto w-full flex flex-col relative">
+        <button
+          onClick={handleClose}
+          className="absolute top-8 right-8 z-50 w-12 h-12 bg-zinc-900/50 hover:bg-zinc-800 backdrop-blur-md rounded-full flex items-center justify-center text-zinc-400 hover:text-white transition-all border border-zinc-800"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 tracking-tight pt-12 md:pt-0">
+          Select a Vehicle
+        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
+          <p className="text-zinc-400">Select your preferred bus according to your passenger count.</p>
+          <div className="relative group/input max-w-[200px]">
+            <label className="flex items-center gap-2 mb-1.5 px-0.5">
+              <Users className="w-3 h-3 text-zinc-500" />
+              <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-zinc-500">Guests</span>
+            </label>
+            <input
+              type="number"
+              min={1}
+              max={30}
+              placeholder="e.g. 15"
+              value={localPassengers}
+              onChange={(e) => setLocalPassengers(e.target.value)}
+              className={`w-full bg-zinc-950/40 border rounded-xl px-4 py-3 text-xs focus:outline-none transition-all font-medium ${isLocalPassengerInvalid ? "border-red-500/50 focus:border-red-500 text-red-500" : "border-zinc-800/60 focus:border-white text-zinc-200 focus:bg-zinc-900"}`}
+            />
+          </div>
+        </div>
+
+        {filteredFleetData.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+            {filteredFleetData.map((bus) => (
+              <button
+                key={bus.id}
+                onClick={() => setSelectedBusForBooking(bus)}
+                className="text-left bg-zinc-900/30 border border-zinc-800 hover:border-emerald-500/50 rounded-2xl p-4 transition-all group relative overflow-hidden flex flex-col"
+              >
+                <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 border border-zinc-800 shrink-0">
+                  <Image
+                    src={bus.image}
+                    alt={bus.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold mb-1">{bus.name}</h3>
+                  <div className="flex items-center gap-2 mb-4">
+                    <p className="text-sm text-zinc-500 uppercase tracking-widest font-bold">{bus.type}</p>
+                    <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
+                    <p className="text-sm text-zinc-500 font-bold flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5" /> {bus.specs.capacity}
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center mt-auto">
+                    <p className="text-lg font-bold">
+                      &#8369;{bus.dailyPrice.toLocaleString()}{" "}
+                      <span className="text-xs text-zinc-500 font-normal">/day</span>
+                    </p>
+                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-zinc-800 rounded-3xl pb-12">
+            <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6">
+              <Users className="w-8 h-8 text-zinc-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">No vehicles available</h3>
+            <p className="text-zinc-500 max-w-sm mb-6">
+              We don&apos;t have any single vehicle that can accommodate {numLocalPassengers} passengers. Please reduce
+              the number of guests or contact us for a custom fleet arrangement.
+            </p>
+            <button
+              onClick={() => {
+                setLocalPassengers("30");
+              }}
+              className="bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-3 px-6 rounded-full transition-colors text-sm"
+            >
+              Reset Passengers
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -217,11 +315,11 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                   )}
                 </div>
 
-                <div className="flex items-center pt-[16px]">
+                <div className="flex items-center pt-[22px]">
                   {isLocalPassengerInvalid && (
                     <div className="flex items-center gap-1.5 text-red-500 font-bold max-sm:hidden">
                       <AlertCircle className="w-3.5 h-3.5" />
-                      <span className="text-[10px]">Invalid passenger count (1-30)</span>
+                      <span className="text-xs">Invalid passenger count (1-30)</span>
                     </div>
                   )}
                 </div>
@@ -454,7 +552,12 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
       <DateTimeModal
         isOpen={showDepartureModal}
         onClose={() => setShowDepartureModal(false)}
-        onSelect={setStartDate}
+        onSelect={(date) => {
+          setStartDate(date);
+          if (endDate && date >= endDate) {
+            setEndDate(null);
+          }
+        }}
         initialDate={startDate}
         title="Select Departure"
       />
@@ -473,11 +576,6 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
         onClose={() => setShowRemoveConfirm(false)}
         onConfirm={() => {
           setSelectedBusForBooking(null);
-          // If we also want to close the overall booking modal when bus is removed:
-          // setIsModalOpen(false);
-          // For now let's just clear the bus so user can see it's clear
-          // or close since the modal is for a specific bus.
-          setIsModalOpen(false);
         }}
         itemName={selectedBusForBooking?.name || "this vehicle"}
       />
