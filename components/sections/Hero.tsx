@@ -1,13 +1,28 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, Variants, AnimatePresence } from "motion/react";
-import { ArrowRight, Calendar, Users, MapPin, CheckCircle2, ShieldCheck, Star, AlertCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Users,
+  MapPin,
+  CheckCircle2,
+  ShieldCheck,
+  Star,
+  AlertCircle,
+  ChevronDown,
+  Search,
+} from "lucide-react";
 import Image from "next/image";
-import { fleetData } from "@/lib/data";
+import { fleetData, POPULAR_LOCATIONS } from "@/lib/data";
+import { useBooking } from "@/lib/BookingContext";
+import { LocationSearchModal } from "../LocationSearchModal";
+import { DateTimeModal } from "../DateTimeModal";
 
 export function Hero() {
   const ref = useRef(null);
+  const { setBookingData, setTargetBusId, setIsModalOpen, setSelectedBusForBooking } = useBooking();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 200]);
   const scale = useTransform(scrollY, [0, 1000], [1, 1.15]);
@@ -15,7 +30,38 @@ export function Hero() {
 
   const [passengers, setPassengers] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  const [dates, setDates] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
+  const [activeInput, setActiveInput] = useState<"departure" | "return" | null>(null);
+
+  const formatDateTime = (date: Date | null) => {
+    if (!date) return "";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const datesString =
+    startDate && endDate
+      ? `${formatDateTime(startDate)} - ${formatDateTime(endDate)}`
+      : startDate
+        ? formatDateTime(startDate)
+        : "";
+
+  // Sync with context
+  useEffect(() => {
+    setBookingData({ passengers, location, dates: datesString });
+  }, [passengers, location, datesString, setBookingData]);
+
+  // Modals state
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [showDepartureModal, setShowDepartureModal] = useState(false);
+  const [showReturnModal, setShowReturnModal] = useState(false);
 
   // Derived state to determine the recommended bus
   const numPassengers = parseInt(passengers);
@@ -23,12 +69,31 @@ export function Hero() {
 
   const recommendedBus =
     !isNaN(numPassengers) && numPassengers > 0 && numPassengers <= 30
-      ? numPassengers <= 10
-        ? fleetData.find((b) => b.id === 1) || fleetData[0]
-        : numPassengers <= 15
-          ? fleetData.find((b) => b.id === 3) || fleetData[1]
-          : fleetData.find((b) => b.id === 2) || fleetData[2]
+      ? fleetData.find((b) => {
+          if (numPassengers <= 10) return b.id === 1;
+          if (numPassengers <= 15) return b.id === 3;
+          return b.id === 2;
+        }) || fleetData[0]
       : fleetData[1]; // Default to Metro Oxford
+
+  const scrollToFleet = () => {
+    document.getElementById("fleet")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleRecommendationAction = () => {
+    if (passengers && location && startDate && endDate && !isPassengerInvalid) {
+      setSelectedBusForBooking(recommendedBus);
+      setIsModalOpen(true);
+    } else {
+      setTargetBusId(recommendedBus.id);
+      scrollToFleet();
+    }
+  };
+
+  const handleGetAQuote = () => {
+    setSelectedBusForBooking(recommendedBus);
+    setIsModalOpen(true);
+  };
 
   // Typography animation variants
   const containerVariants: Variants = {
@@ -110,13 +175,17 @@ export function Hero() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={scrollToFleet}
                 className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl hover:bg-zinc-800 dark:hover:bg-white inline-flex items-center gap-2 group"
               >
                 View Our Fleet
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
-              <button className="px-8 py-4 rounded-xl font-bold text-lg text-zinc-900 dark:text-white bg-zinc-200/50 dark:bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 transition-colors inline-flex items-center gap-2">
+              <button
+                onClick={handleGetAQuote}
+                className="px-8 py-4 rounded-xl font-bold text-lg text-zinc-900 dark:text-white bg-zinc-200/50 dark:bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 transition-colors inline-flex items-center gap-2"
+              >
                 Get a Quote
               </button>
             </motion.div>
@@ -160,81 +229,124 @@ export function Hero() {
                 <h3 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
                   Reserve Now
                 </h3>
-                <div className="hidden md:flex gap-1">
-                  <div className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700"></div>
-                  <div className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-700"></div>
-                  <div className="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                    Live Rates
+                  </span>
                 </div>
               </div>
 
-              <div className="space-y-5">
-                <div>
-                  <div className="relative group/input">
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="relative group/input col-span-2 sm:col-span-1">
                     <div
                       className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100"}`}
                     >
                       <Users className="w-5 h-5" />
                     </div>
+                    <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500">
+                      Guests
+                    </label>
                     <input
                       type="number"
                       min={1}
                       max={30}
-                      placeholder="Number of passengers"
+                      placeholder="Total Persons"
                       value={passengers}
                       onChange={(e) => setPassengers(e.target.value)}
-                      className={`w-full bg-zinc-50 dark:bg-zinc-950 border hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 transition-all ${isPassengerInvalid ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/20" : "border-zinc-200 dark:border-zinc-800 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"}`}
+                      className={`w-full bg-zinc-50 dark:bg-zinc-950 border hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 text-sm focus:outline-none focus:ring-2 transition-all ${isPassengerInvalid ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/20" : "border-zinc-200 dark:border-zinc-800 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"}`}
                     />
                   </div>
 
-                  <AnimatePresence>
-                    {isPassengerInvalid && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                        animate={{ opacity: 1, height: "auto", marginTop: 8 }}
-                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                        className="text-red-500 text-xs font-medium flex items-center gap-1.5 overflow-hidden"
+                  <div className="relative group/input col-span-2 sm:col-span-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowLocationModal(true)}
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                    >
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                        <MapPin className="w-5 h-5" />
+                      </div>
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                        Pickup
+                      </label>
+                      <div
+                        className={`text-sm font-medium line-clamp-1 ${location ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
                       >
-                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                        Please enter a valid number between 1 and 30 passengers.
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="relative group/input">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
-                    <MapPin className="w-5 h-5" />
+                        {location || "Enter Landmark"}
+                      </div>
+                    </button>
                   </div>
-                  <input
-                    type="text"
-                    placeholder="Pickup location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
-                  />
-                </div>
-
-                <div className="relative group/input">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 transition-colors">
-                    <Calendar className="w-5 h-5" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Travel dates (e.g. Oct 12 - Oct 14)"
-                    value={dates}
-                    onChange={(e) => setDates(e.target.value)}
-                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl py-3.5 pl-12 pr-4 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100 transition-all"
-                  />
                 </div>
 
                 <AnimatePresence mode="wait">
-                  {(passengers || location || dates) && !isPassengerInvalid ? (
+                  {isPassengerInvalid && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="text-red-500 text-[11px] font-bold uppercase tracking-wide flex items-center gap-2 overflow-hidden px-1"
+                    >
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      Invalid passenger count (1-30)
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="relative group/input">
+                    <button
+                      type="button"
+                      onClick={() => setShowDepartureModal(true)}
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                    >
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                        Departure
+                      </label>
+                      <div
+                        className={`text-sm font-medium line-clamp-1 ${startDate ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
+                      >
+                        {startDate ? formatDateTime(startDate) : "Select time"}
+                      </div>
+                    </button>
+                  </div>
+
+                  <div className="relative group/input">
+                    <button
+                      type="button"
+                      onClick={() => setShowReturnModal(true)}
+                      className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
+                    >
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                        Return
+                      </label>
+                      <div
+                        className={`text-sm font-medium line-clamp-1 ${endDate ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-300 dark:text-zinc-700"}`}
+                      >
+                        {endDate ? formatDateTime(endDate) : "Select time"}
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {(passengers || location || startDate || endDate) && !isPassengerInvalid ? (
                     <motion.div
                       key="recommendation"
-                      initial={{ opacity: 0, height: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, height: "auto", scale: 1 }}
-                      exit={{ opacity: 0, height: 0, scale: 0.95 }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{
+                        duration: 0.5,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                       className="mt-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 relative group/card cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all origin-top overflow-hidden"
                     >
                       <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-bl-xl shadow-sm z-10">
@@ -264,28 +376,35 @@ export function Hero() {
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-                            ${(recommendedBus.dailyPrice / 1000).toFixed(0)}k
+                            &#8369;{recommendedBus.dailyPrice.toLocaleString()}
                           </p>
                           <p className="text-[9px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold">
                             / day
                           </p>
                         </div>
                       </div>
-                      <button className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg">
-                        {passengers && location && dates ? "Book Now" : "Check Availability"}
+                      <button
+                        onClick={handleRecommendationAction}
+                        className="w-full mt-4 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-3.5 rounded-xl text-sm transition-colors shadow-md hover:shadow-lg"
+                      >
+                        {passengers && location && startDate && endDate ? "Book Now" : "Check Availability"}
                       </button>
                     </motion.div>
                   ) : (
                     <motion.div
-                      key="empty-state"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      key="cta"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{
+                        duration: 0.4,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                       className="mt-6 origin-top overflow-hidden"
                     >
                       <button
                         disabled={isPassengerInvalid}
+                        onClick={scrollToFleet}
                         className="w-full bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-bold py-4 rounded-xl text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0"
                       >
                         Search Available Vehicles
@@ -304,6 +423,30 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
+
+      <LocationSearchModal
+        isOpen={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        onSelect={setLocation}
+        initialValue={location}
+      />
+
+      <DateTimeModal
+        isOpen={showDepartureModal}
+        onClose={() => setShowDepartureModal(false)}
+        onSelect={setStartDate}
+        initialDate={startDate}
+        title="Select Departure"
+      />
+
+      <DateTimeModal
+        isOpen={showReturnModal}
+        onClose={() => setShowReturnModal(false)}
+        onSelect={setEndDate}
+        initialDate={endDate}
+        minDate={startDate || undefined}
+        title="Select Return"
+      />
     </section>
   );
 }

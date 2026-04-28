@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { BookingProvider } from "@/lib/BookingContext";
+import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css"; // Global styles
 
 const inter = Inter({
@@ -26,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="font-sans antialiased bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900 overflow-x-hidden relative transition-colors duration-300"
         suppressHydrationWarning
       >
+        <div id="root-portal"></div>
         {/* Subtle Noise Texture for Organic Premium Feel */}
         <div
           className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-multiply"
@@ -36,9 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ></div>
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SmoothScroll>
-            <div className="relative z-10">{children}</div>
-          </SmoothScroll>
+          <BookingProvider>
+            <SmoothScroll>
+              <div className="relative z-10">{children}</div>
+            </SmoothScroll>
+          </BookingProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,10 +1,147 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "react-datepicker/dist/react-datepicker.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom DatePicker Styling */
+.react-datepicker {
+  background-color: rgba(9, 9, 11, 0.95) !important; /* zinc-950 with transparency */
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(39, 39, 42, 0.5) !important; /* zinc-800 */
+  border-radius: 1.5rem !important;
+  font-family: inherit !important;
+  color: white !important;
+  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6) !important;
+  padding: 8px !important;
+}
+
+.react-datepicker__header {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.5) !important;
+  padding-top: 15px !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+  color: white !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.15em !important;
+  margin-bottom: 15px !important;
+}
+
+.react-datepicker__day-name {
+  color: #71717a !important; /* zinc-400 */
+  font-weight: 700 !important;
+  font-size: 0.65rem !important;
+  width: 2.5rem !important;
+}
+
+.react-datepicker__day {
+  color: #d4d4d8 !important; /* zinc-300 */
+  border-radius: 0.75rem !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+  margin: 2px !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.2) !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.react-datepicker__time-container {
+  border-left: 1px solid rgba(39, 39, 42, 0.5) !important;
+  width: 90px !important;
+}
+
+/* Force dark background for the entire time selection tree */
+.react-datepicker__time-container,
+.react-datepicker__time,
+.react-datepicker__time-box,
+.react-datepicker__time-list {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item {
+  color: #a1a1aa !important;
+  transition: all 0.2s !important;
+  padding: 12px 5px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  font-weight: 800 !important;
+}
+
+/* Hide scrollbar for time list */
+.react-datepicker__time-list {
+  scrollbar-width: none;
+}
+.react-datepicker__time-list::-webkit-scrollbar {
+  display: none;
+}
+
+.react-datepicker__day--outside-month {
+  color: #27272a !important; /* zinc-800 */
+}
+
+.react-datepicker__navigation {
+  top: 18px !important;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
 }
 
 @layer utilities {
