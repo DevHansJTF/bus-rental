@@ -5,12 +5,30 @@ import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { Settings, Users, Wind, ArrowRight, ArrowLeft, X, Check, CheckCircle2 } from "lucide-react";
 import { fleetData } from "@/lib/data";
+import { useBooking } from "@/lib/BookingContext";
 
 export function Fleet() {
+  const { targetBusId, setTargetBusId, setIsModalOpen, setSelectedBusForBooking } = useBooking();
   const [isWeekly, setIsWeekly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [direction, setDirection] = useState(0);
   const [selectedBus, setSelectedBus] = useState<(typeof fleetData)[0] | null>(null);
+
+  // Handle deep link from Hero
+  useEffect(() => {
+    if (targetBusId) {
+      const busIndex = fleetData.findIndex((b) => b.id === targetBusId);
+      if (busIndex !== -1) {
+        // Calculate direction and set index
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setDirection(busIndex > currentIndex ? 1 : -1);
+        setCurrentIndex(busIndex);
+        setSelectedBus(fleetData[busIndex]);
+        // Reset target so it doesn't trigger again
+        setTargetBusId(null);
+      }
+    }
+  }, [targetBusId, currentIndex, setTargetBusId]);
 
   const nextSlide = () => {
     setDirection(1);
@@ -32,20 +50,13 @@ export function Fleet() {
     return cards;
   };
 
-  const handleBookNow = () => {
-    setSelectedBus(null);
-    document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
-
-    // Slight delay to allow smooth scroll, then pulse the console
-    setTimeout(() => {
-      const consoleEl = document.getElementById("booking-console");
-      if (consoleEl) {
-        consoleEl.classList.add("ring-4", "ring-emerald-500/50", "transition-all", "duration-500");
-        setTimeout(() => {
-          consoleEl.classList.remove("ring-4", "ring-emerald-500/50");
-        }, 1500);
-      }
-    }, 800);
+  const handleBookNow = (bus?: (typeof fleetData)[0]) => {
+    const busToBook = bus || selectedBus;
+    if (busToBook) {
+      setSelectedBusForBooking(busToBook);
+      setSelectedBus(null);
+      setIsModalOpen(true);
+    }
   };
 
   // Lock body scroll when modal is open
@@ -248,7 +259,7 @@ export function Fleet() {
                         </div>
 
                         <button
-                          onClick={handleBookNow}
+                          onClick={() => handleBookNow(bus)}
                           className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-900 dark:hover:border-white hover:bg-zinc-900 dark:hover:bg-white text-zinc-900 dark:text-white hover:text-white dark:hover:text-zinc-900 font-bold py-4 rounded-xl transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow-md"
                         >
                           Book Now
@@ -371,7 +382,7 @@ export function Fleet() {
                     </p>
                   </div>
                   <button
-                    onClick={handleBookNow}
+                    onClick={() => handleBookNow(selectedBus)}
                     className="w-full sm:w-auto bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
                   >
                     Proceed to Booking

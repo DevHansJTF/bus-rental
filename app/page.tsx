@@ -6,6 +6,7 @@ import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Stats } from "@/components/sections/Stats";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CTAFooter } from "@/components/layout/CTAFooter";
+import { BookingModal } from "@/components/BookingModal";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Stats />
       <Testimonials />
       <CTAFooter />
+      <BookingModal />
     </main>
   );
 }
