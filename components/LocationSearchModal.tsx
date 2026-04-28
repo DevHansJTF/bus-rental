@@ -57,6 +57,13 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
     return () => clearTimeout(t);
   }, [query, isOpen]);
 
+  const handleClose = () => {
+    if (query.trim() === "" && initialValue !== "") {
+      onSelect("");
+    }
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -66,7 +73,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
               initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
               animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
               exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-              onClick={onClose}
+              onClick={handleClose}
               className="absolute inset-0 bg-black/40 dark:bg-black/60"
             />
             <motion.div
@@ -87,9 +94,11 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" && query.trim()) {
+                      if (e.key === "Enter") {
                         onSelect(query.trim());
                         onClose();
+                      } else if (e.key === "Escape") {
+                        handleClose();
                       }
                     }}
                     placeholder="Search destination or address..."
@@ -97,7 +106,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
                   />
                 </div>
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="w-12 h-12 flex shrink-0 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
                 >
                   <X className="w-5 h-5" />

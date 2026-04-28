@@ -45,8 +45,26 @@ export function DateTimeModal({ isOpen, onClose, onSelect, initialDate, minDate,
 
   const generateTimeSlots = () => {
     const slots = [];
+    const minTimeDate = minDate || new Date();
+
+    const isSameDayAsMin =
+      selectedDate &&
+      selectedDate.getDate() === minTimeDate.getDate() &&
+      selectedDate.getMonth() === minTimeDate.getMonth() &&
+      selectedDate.getFullYear() === minTimeDate.getFullYear();
+
     for (let h = 0; h < 24; h++) {
       for (let m = 0; m < 60; m += 30) {
+        if (isSameDayAsMin) {
+          // If the hour has already passed, skip
+          if (h < minTimeDate.getHours()) {
+            continue;
+          }
+          // If we are at the current hour, check minutes
+          if (h === minTimeDate.getHours() && m <= minTimeDate.getMinutes()) {
+            continue;
+          }
+        }
         slots.push({ hours: h, minutes: m });
       }
     }

@@ -78,12 +78,12 @@ export function Fleet() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-heading font-bold text-zinc-900 dark:text-white mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-zinc-900 dark:text-white mb-4"
           >
             Choose your desired bus
           </motion.h2>
@@ -92,7 +92,7 @@ export function Fleet() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-zinc-500 dark:text-zinc-400 text-lg"
+            className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg px-4"
           >
             Find the perfect ride gracefully tailored to your needs.
           </motion.p>
@@ -295,13 +295,13 @@ export function Fleet() {
             >
               <button
                 onClick={() => setSelectedBus(null)}
-                className="absolute top-6 right-6 z-20 w-10 h-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 w-8 h-8 sm:w-10 sm:h-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
               {/* Image Section */}
-              <div className="relative w-full md:w-1/2 h-64 md:h-auto shrink-0 bg-zinc-100 dark:bg-zinc-900">
+              <div className="relative w-full md:w-1/2 h-56 sm:h-64 md:h-auto shrink-0 bg-zinc-100 dark:bg-zinc-900">
                 <Image
                   src={selectedBus.image}
                   alt={selectedBus.name}
@@ -316,25 +316,27 @@ export function Fleet() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="p-8 md:p-12 flex flex-col justify-center overflow-y-auto w-full"
+                className="p-6 sm:p-8 md:p-12 flex flex-col justify-center overflow-y-auto w-full"
               >
-                <div className="mb-8">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                <div className="mb-6 sm:mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
+                    <CheckCircle2 className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
                     Available Now
                   </div>
-                  <h3 className="font-heading font-bold text-4xl text-zinc-900 dark:text-white tracking-tight mb-2">
+                  <h3 className="font-heading font-bold text-3xl sm:text-4xl text-zinc-900 dark:text-white tracking-tight mb-2">
                     {selectedBus.name}
                   </h3>
-                  <p className="text-zinc-500 dark:text-zinc-400 font-medium text-lg">{selectedBus.type}</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 font-medium text-base sm:text-lg">
+                    {selectedBus.type}
+                  </p>
                 </div>
 
-                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
                   {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
                   ensuring a comfortable journey for your entire group.
                 </p>
 
-                <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-6 gap-x-4 mb-8 sm:mb-10">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
                       <Users className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />

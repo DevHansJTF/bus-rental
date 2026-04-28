@@ -67,7 +67,7 @@ export function Stats() {
               viewport={{ once: true }}
               className="md:px-8"
             >
-              <div className="text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
+              <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
                 <Counter from={0} to={20} suffix="k+" />
               </div>
               <p className="text-[10px] text-zinc-500 dark:text-blue-400 uppercase font-bold tracking-[0.2em] mt-3">
@@ -80,9 +80,9 @@ export function Stats() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="md:px-8 pt-10 md:pt-0"
+              className="md:px-8 pt-6 sm:pt-10 md:pt-0"
             >
-              <div className="text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
+              <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
                 <Counter from={0} to={540} suffix="+" />
               </div>
               <p className="text-[10px] text-zinc-500 dark:text-blue-400 uppercase font-bold tracking-[0.2em] mt-3">
@@ -95,9 +95,9 @@ export function Stats() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="md:px-8 pt-10 md:pt-0"
+              className="md:px-8 pt-6 sm:pt-10 md:pt-0"
             >
-              <div className="text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
+              <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-black text-zinc-900 dark:text-white mb-2 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors">
                 <Counter from={0} to={25} suffix="+" />
               </div>
               <p className="text-[10px] text-zinc-500 dark:text-blue-400 uppercase font-bold tracking-[0.2em] mt-3">
