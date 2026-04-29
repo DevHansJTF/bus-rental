@@ -386,7 +386,7 @@ export function Hero() {
                 </div>
 
                 <AnimatePresence mode="wait">
-                  {filledCount >= 2 && (
+                  {filledCount >= 1 && (
                     <motion.div
                       initial={{ opacity: 0, height: 0, marginTop: 0 }}
                       animate={{ opacity: 1, height: "auto", marginTop: 16 }}

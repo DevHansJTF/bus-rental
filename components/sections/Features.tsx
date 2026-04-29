@@ -29,14 +29,14 @@ export function Features() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 lg:gap-6 auto-rows-[280px] md:auto-rows-[320px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 lg:gap-6 auto-rows-auto md:auto-rows-[320px]">
           {/* Large Card (Left) - Budget Friendly */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm p-10 lg:p-12 flex flex-col justify-end hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
+            className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm p-8 sm:p-10 lg:p-12 flex flex-col justify-end hover:shadow-xl hover:-translate-y-1 transition-all duration-500 min-h-[380px] md:min-h-0"
           >
             {/* Background Image / Abstract Graphic */}
             <div className="absolute inset-0 z-0">
