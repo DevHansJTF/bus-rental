@@ -25,7 +25,7 @@ export const fleetData: Bus[] = [
       capacity: "10 Persons",
       ac: "Air Conditioner",
     },
-    image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2938&auto=format&fit=crop",
+    image: "/city-sprinter.jpg",
     description: "Perfect for small groups requiring a comfortable and agile ride through the city.",
   },
   {

@@ -173,6 +173,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
   const isFormComplete = !!(
     formData.fullName.trim() &&
     formData.email.trim() &&
+    formData.phone.trim() &&
     formData.address.trim() &&
     formData.city.trim() &&
     formData.postalCode.trim() &&
@@ -603,6 +604,16 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                 <div className="relative">
                   <input
                     required
+                    type="tel"
+                    placeholder="Phone Number"
+                    className="w-full bg-transparent border-b border-zinc-800 py-3 text-sm focus:border-white focus:outline-none transition-colors placeholder:text-zinc-600 placeholder:uppercase placeholder:text-[10px] placeholder:tracking-[0.2em] font-bold"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+                <div className="relative">
+                  <input
+                    required
                     type="text"
                     placeholder="Delivery Address / Pickup"
                     className="w-full bg-transparent border-b border-zinc-800 py-3 text-sm focus:border-white focus:outline-none transition-colors placeholder:text-zinc-600 placeholder:uppercase placeholder:text-[10px] placeholder:tracking-[0.2em] font-bold"
@@ -639,7 +650,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
                     {confirmed && <Check className="w-3.5 h-3.5 text-zinc-950" strokeWidth={3} />}
                   </div>
                   <span className="text-[11px] text-zinc-500 leading-tight font-medium select-none">
-                    I confirm my details are correct and I authorize OmniBus to contact me regarding this request.
+                    I confirm my details are correct and I authorize ApexBus to contact me regarding this request.
                   </span>
                 </label>
               </div>
