@@ -220,7 +220,7 @@ export function Fleet() {
                         <div className="flex justify-between items-start mb-6">
                           <div>
                             <h3 className="font-heading font-bold text-3xl text-zinc-900 dark:text-white tracking-tight">
-                              {bus.name.split(" ")[0]}
+                              {bus.name}
                             </h3>
                             <p className="text-zinc-500 dark:text-zinc-400 font-medium">{bus.type}</p>
                           </div>
@@ -316,79 +316,81 @@ export function Fleet() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="p-6 sm:p-8 md:p-12 flex flex-col justify-center overflow-y-auto w-full"
+                className="flex-1 min-h-0 overflow-y-auto w-full"
               >
-                <div className="mb-6 sm:mb-8">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
-                    <CheckCircle2 className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-                    Available Now
-                  </div>
-                  <h3 className="font-heading font-bold text-3xl sm:text-4xl text-zinc-900 dark:text-white tracking-tight mb-2">
-                    {selectedBus.name}
-                  </h3>
-                  <p className="text-zinc-500 dark:text-zinc-400 font-medium text-base sm:text-lg">
-                    {selectedBus.type}
-                  </p>
-                </div>
-
-                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
-                  {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
-                  ensuring a comfortable journey for your entire group.
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-6 gap-x-4 mb-8 sm:mb-10">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
-                      <Users className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                <div className="p-6 sm:p-8 md:p-12 flex flex-col justify-start md:justify-center min-h-full">
+                  <div className="mb-6 sm:mb-8">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
+                      <CheckCircle2 className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
+                      Available Now
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Capacity</p>
-                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.capacity}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
-                      <Wind className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Climate Control</p>
-                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.ac}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
-                      <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Transmission</p>
-                      <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.transmission}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
-                      <Check className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Entertainment</p>
-                      <p className="font-bold text-zinc-900 dark:text-white">Included</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
-                  <div className="w-full sm:w-auto text-center sm:text-left mr-auto">
-                    <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">Starting from</p>
-                    <p className="font-heading font-bold text-3xl text-zinc-900 dark:text-white">
-                      &#8369;{selectedBus.dailyPrice.toLocaleString()}{" "}
-                      <span className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">/day</span>
+                    <h3 className="font-heading font-bold text-3xl sm:text-4xl text-zinc-900 dark:text-white tracking-tight mb-2">
+                      {selectedBus.name}
+                    </h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium text-base sm:text-lg">
+                      {selectedBus.type}
                     </p>
                   </div>
-                  <button
-                    onClick={() => handleBookNow(selectedBus)}
-                    className="w-full sm:w-auto bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
-                  >
-                    Proceed to Booking
-                  </button>
+
+                  <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
+                    {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
+                    ensuring a comfortable journey for your entire group.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-6 gap-x-4 mb-8 sm:mb-10">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                        <Users className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Capacity</p>
+                        <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.capacity}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                        <Wind className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Climate Control</p>
+                        <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.ac}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                        <Settings className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Transmission</p>
+                        <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.transmission}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shrink-0">
+                        <Check className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Entertainment</p>
+                        <p className="font-bold text-zinc-900 dark:text-white">Included</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
+                    <div className="w-full sm:w-auto text-center sm:text-left mr-auto">
+                      <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">Starting from</p>
+                      <p className="font-heading font-bold text-3xl text-zinc-900 dark:text-white">
+                        &#8369;{selectedBus.dailyPrice.toLocaleString()}{" "}
+                        <span className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">/day</span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleBookNow(selectedBus)}
+                      className="w-full sm:w-auto bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl active:scale-95"
+                    >
+                      Proceed to Booking
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
