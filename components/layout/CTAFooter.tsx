@@ -32,7 +32,7 @@ export function CTAFooter() {
             </h2>
 
             <p className="text-zinc-400 text-base md:text-lg max-w-sm mb-12 font-medium leading-relaxed">
-              Join thousands of satisfied customers who trust OmniBus for their premium travel needs. Let&apos;s elevate
+              Join thousands of satisfied customers who trust ApexBus for their premium travel needs. Let&apos;s elevate
               your journey.
             </p>
 
@@ -95,10 +95,10 @@ export function CTAFooter() {
 
         <div className="mt-20 flex flex-col md:flex-row justify-between items-center px-4 pt-8 border-t border-zinc-200 dark:border-zinc-800 transition-colors">
           <div className="font-heading font-bold text-xl tracking-tighter text-zinc-900 dark:text-zinc-50 mb-4 md:mb-0">
-            Omni<span className="text-zinc-400 dark:text-zinc-500">Bus</span>
+            Apex<span className="text-zinc-400 dark:text-zinc-500">Bus</span>
           </div>
           <div className="text-center text-zinc-500 dark:text-zinc-400 text-sm font-medium">
-            &copy; {new Date().getFullYear()} OmniBus Rental. All Rights Reserved.
+            &copy; {new Date().getFullYear()} ApexBus Rental. All Rights Reserved.
           </div>
         </div>
       </div>

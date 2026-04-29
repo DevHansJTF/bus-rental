@@ -20,7 +20,7 @@ const reviews = [
     rating: 5,
   },
   {
-    text: "Punctual, professional, and affordable. We used OmniBus for a week-long nationwide tour and had absolutely zero issues.",
+    text: "Punctual, professional, and affordable. We used ApexBus for a week-long nationwide tour and had absolutely zero issues.",
     name: "Marcus Johnson",
     role: "Tour Manager",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",

@@ -38,15 +38,15 @@ export function Features() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm p-8 sm:p-10 lg:p-12 flex flex-col justify-end hover:shadow-xl hover:-translate-y-1 transition-all duration-500 min-h-[380px] md:min-h-0"
           >
-            {/* Background Image / Abstract Graphic */}
-            <div className="absolute inset-0 z-0">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2942&auto=format&fit=crop"
-                alt="Abstract representation"
+                src="/budget-friendly.jpg"
+                alt="Premium Bus"
                 fill
-                className="object-cover opacity-[0.03] dark:opacity-[0.1] group-hover:opacity-[0.06] dark:group-hover:opacity-[0.15] group-hover:scale-105 transition-all duration-700 grayscale mix-blend-multiply dark:mix-blend-screen hover:mix-blend-normal"
+                className="object-cover opacity-[0.4] dark:opacity-[0.3] group-hover:scale-105 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-100 dark:from-zinc-900 via-transparent to-transparent opacity-50"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 dark:from-zinc-900 dark:via-zinc-900/80 to-transparent"></div>
             </div>
 
             <div className="relative z-10 mt-auto max-w-xl">
@@ -72,7 +72,17 @@ export function Features() {
             transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
             className="md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm p-8 flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-500"
           >
-            <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 flex items-center justify-center mb-auto shadow-sm group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900 transition-all duration-500 z-10">
+            <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem]">
+              <Image
+                src="/nationwide.jpg"
+                alt="Maps and Navigation"
+                fill
+                className="object-cover opacity-[0.3] group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent"></div>
+            </div>
+
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 flex items-center justify-center mb-auto shadow-sm group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900 transition-all duration-500 z-10 relative">
               <MapPin className="w-5 h-5" />
             </div>
 
@@ -92,9 +102,17 @@ export function Features() {
             transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
             className="md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-md p-8 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-zinc-50 dark:from-zinc-800 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem]">
+              <Image
+                src="/premium-comfort.jpg"
+                alt="Bus Interior"
+                fill
+                className="object-cover opacity-[0.3] group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent"></div>
+            </div>
 
-            <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 flex items-center justify-center mb-auto shadow-sm group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900 transition-all duration-500 z-10">
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 flex items-center justify-center mb-auto shadow-sm group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-900 transition-all duration-500 z-10 relative">
               <Bus className="w-5 h-5" />
             </div>
 

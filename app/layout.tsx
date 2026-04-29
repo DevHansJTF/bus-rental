@@ -17,7 +17,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "OmniBus | Premium Bus Rentals made easy",
+  title: "ApexBus | Premium Bus Rentals made easy",
   description: "Find, book, and rent a bus in easy steps. Get a bus wherever and whenever you need it.",
 };
 

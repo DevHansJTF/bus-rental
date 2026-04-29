@@ -44,7 +44,7 @@ export function Navbar() {
             <Bus className="w-5 h-5 relative z-10" />
           </div>
           <span className="font-heading font-bold text-2xl tracking-tight text-zinc-900 dark:text-zinc-50">
-            Omni<span className="text-zinc-500 dark:text-zinc-400">Bus</span>
+            Apex<span className="text-zinc-500 dark:text-zinc-400">Bus</span>
           </span>
         </a>
 
