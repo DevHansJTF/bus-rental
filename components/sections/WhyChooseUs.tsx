@@ -6,32 +6,32 @@ const reasons = [
   {
     title: "Flexible Choices",
     description:
-      "Platea non auctor fermentum sollicitudin. Eget adipiscing augue sit quam natoque ornare cursus viverra odio.",
+      "Select from a vast array of tailored itineraries, luxury vehicle arrangements, and pick-up locations suited entirely to your group’s schedule and specific travel requirements.",
   },
   {
     title: "Awesome Support",
     description:
-      "Eget adipiscing augue sit quam natoque ornare cursus viverra odio. Diam quam gravida ultricies velit.",
+      "Our dedicated customer success team is available 24/7 to answer your inquiries, assist with booking changes, and guarantee a seamless, stress-free travel experience from start to finish.",
   },
   {
     title: "Maximum Freedom",
     description:
-      "Diam quam gravida ultricies velit duis consequat integer. Est aliquam posuere vel rhoncus massa volutpat in.",
+      "Enjoy complete independence to customize your route and stops. We give you the liberty to pause your journey, explore sights, and detour whenever inspiration strikes.",
   },
   {
     title: "Comfort You Deserve",
     description:
-      "Vitae pretium nulla sed quam id nisl semper. Vel non in proin egestas dis_faucibus rhoncus. Iaculis dignissim aenean.",
+      "Indulge in plush seating, expansive legroom, and climate-controlled cabins. We prioritize your physical well-being so you arrive at your destination refreshed and fully energized.",
   },
   {
     title: "Seamless Booking",
     description:
-      "Diam quam gravida ultricies velit duis consequat integer. Est aliquam posuere vel rhoncus massa volutpat in.",
+      "Our intuitive online platform ensures reserving your bus is fast, effortless, and secure. Instant confirmations and transparent pricing leave no room for guesswork.",
   },
   {
     title: "Safe Journey",
     description:
-      "Diam quam gravida ultricies velit duis consequat integer. Est aliquam posuere vel rhoncus massa volutpat in.",
+      "Traverse securely with our highly experienced, certified drivers and top-tier fleet. Rigorous maintenance checks and stringent safety protocols protect you every mile of the way.",
   },
 ];
 
@@ -64,7 +64,7 @@ export function WhyChooseUs() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="mt-8 text-zinc-500 dark:text-slate-400 leading-relaxed max-w-sm text-lg transition-colors"
+                className="mt-8 text-zinc-500 dark:text-slate-400 leading-relaxed max-w-sm text-lg transition-colors text-justify"
               >
                 We blend modern technology, elegant fleet design, and exceptional customer service into one holistic
                 experience.
@@ -90,7 +90,7 @@ export function WhyChooseUs() {
                   </span>
                   {reason.title}
                 </h3>
-                <p className="text-zinc-500 dark:text-slate-400 leading-relaxed text-sm md:text-base relative z-10 transition-colors">
+                <p className="text-zinc-500 dark:text-slate-400 leading-relaxed text-sm md:text-base relative z-10 transition-colors text-justify">
                   {reason.description}
                 </p>
               </motion.div>

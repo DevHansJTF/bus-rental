@@ -28,7 +28,7 @@ const features = [
     description:
       "Ergonomic seating, refined climate control, and unmatched legroom. We prioritize your well-being with meticulously maintained fleets so you can arrive relaxed, refreshed, and ready.",
     icon: Bus,
-    image: "/premium-comfort.jpg",
+    image: "/premium-comfort.png",
   },
 ];
 
@@ -38,7 +38,7 @@ export function Features() {
   return (
     <section
       id="features"
-      className="py-24 md:py-32 bg-zinc-50 dark:bg-zinc-950 relative z-20 overflow-clip transition-colors duration-300"
+      className="py-24 md:py-32 bg-zinc-50 dark:bg-zinc-950 relative z-20 overflow-visible transition-colors duration-300"
       ref={containerRef}
     >
       {/* Background abstract gradients and textures */}
@@ -73,7 +73,7 @@ export function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.2 }}
-              className="mt-8 text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium max-w-lg"
+              className="mt-8 text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium max-w-lg text-justify"
             >
               We redefine the standards of group travel. By combining premium comfort, widespread nationwide coverage,
               and budget-friendly pricing, we deliver an unmatched experience from start to finish.
@@ -142,7 +142,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
             <feature.icon className="w-8 h-8 sm:w-10 sm:h-10" strokeWidth={1.5} />
           </div>
 
-          <span className="text-6xl sm:text-7xl lg:text-8xl font-heading font-black text-zinc-100 dark:text-zinc-900/50 group-hover:text-zinc-200 dark:group-hover:text-zinc-800 transition-colors duration-500 tracking-tighter">
+          <span className="text-6xl sm:text-7xl lg:text-8xl font-heading font-black text-zinc-200 dark:text-zinc-900 group-hover:text-zinc-300 dark:group-hover:text-zinc-800 transition-colors duration-500 tracking-tighter">
             0{index + 1}
           </span>
         </div>
@@ -151,7 +151,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-zinc-900 dark:text-white mb-4 tracking-tight transition-colors duration-500">
             {feature.title}
           </h3>
-          <p className="text-base sm:text-lg lg:text-xl text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed text-justify">
             {feature.description}
           </p>
         </div>
