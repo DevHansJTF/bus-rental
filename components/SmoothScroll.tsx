@@ -7,9 +7,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.03,
-      wheelMultiplier: 0.8,
+      wheelMultiplier: 0.5,
       smoothWheel: true,
     });
+
+    // @ts-ignore
+    window.lenis = lenis;
 
     let rafId: number;
 
@@ -23,6 +26,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      // @ts-ignore
+      delete window.lenis;
     };
   }, []);
 
