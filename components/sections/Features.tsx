@@ -28,7 +28,7 @@ const features = [
     description:
       "Ergonomic seating, refined climate control, and unmatched legroom. We prioritize your well-being with meticulously maintained fleets so you can arrive relaxed, refreshed, and ready.",
     icon: Bus,
-    image: "/premium-comfort.png",
+    image: "/premium-comfort.jpg",
   },
 ];
 
