@@ -64,28 +64,31 @@ export function Fleet() {
     if (selectedBus) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
-      // @ts-ignore
-      if (typeof window !== "undefined" && window.lenis) {
-        // @ts-ignore
-        window.lenis.stop();
+      if (
+        typeof window !== "undefined" &&
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+      ) {
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.stop();
       }
     } else if (!isModalOpen) {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
-      // @ts-ignore
-      if (typeof window !== "undefined" && window.lenis) {
-        // @ts-ignore
-        window.lenis.start();
+      if (
+        typeof window !== "undefined" &&
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+      ) {
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.start();
       }
     }
 
     return () => {
       // Don't arbitrarily clear the lock if the booking modal is open
       if (!isModalOpen && !selectedBus) {
-        // @ts-ignore
-        if (typeof window !== "undefined" && window.lenis) {
-          // @ts-ignore
-          window.lenis.start();
+        if (
+          typeof window !== "undefined" &&
+          (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+        ) {
+          (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.start();
         }
       }
     };
@@ -142,9 +145,6 @@ export function Fleet() {
 
         {/* Carousel */}
         <div className="relative">
-          {/* Background decorative shape */}
-          <div className="absolute top-1/2 left-0 right-0 h-96 bg-zinc-50 dark:bg-zinc-900/50 rounded-[3rem] -translate-y-1/2 -z-10 transform -skew-y-2 border border-zinc-100 dark:border-zinc-800/50"></div>
-
           {/* Controls */}
           <div className="flex justify-end gap-3 mb-10 pr-4 relative z-20">
             <button
@@ -256,7 +256,7 @@ export function Fleet() {
                                 &#8369;{isWeekly ? bus.weeklyPrice.toLocaleString() : bus.dailyPrice.toLocaleString()}
                               </motion.p>
                             </AnimatePresence>
-                            <p className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider mt-1">
+                            <p className="text-[10px] uppercase font-bold text-zinc-500 dark:text-zinc-400 tracking-wider mt-1">
                               {isWeekly ? "per week" : "per day"}
                             </p>
                           </div>
@@ -265,15 +265,15 @@ export function Fleet() {
                         {/* Specs */}
                         <div className="grid grid-cols-3 gap-4 border-t border-b border-zinc-100 dark:border-zinc-800 py-6 mb-6">
                           <div className="flex flex-col items-center text-center gap-2 text-zinc-500 dark:text-zinc-400">
-                            <Settings className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
+                            <Settings className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
                             <span className="text-xs font-medium">{bus.specs.transmission}</span>
                           </div>
                           <div className="flex flex-col items-center text-center gap-2 text-zinc-500 dark:text-zinc-400 border-x border-zinc-100 dark:border-zinc-800">
-                            <Users className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
+                            <Users className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
                             <span className="text-xs font-medium">{bus.specs.capacity}</span>
                           </div>
                           <div className="flex flex-col items-center text-center gap-2 text-zinc-500 dark:text-zinc-400">
-                            <Wind className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
+                            <Wind className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
                             <span className="text-xs font-medium">{bus.specs.ac}</span>
                           </div>
                         </div>
@@ -353,7 +353,7 @@ export function Fleet() {
                     </p>
                   </div>
 
-                  <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
+                  <p className="text-sm sm:text-base text-zinc-800 font-semibold dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
                     {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
                     ensuring a comfortable journey for your entire group.
                   </p>

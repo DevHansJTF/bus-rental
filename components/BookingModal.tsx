@@ -29,27 +29,30 @@ export function BookingModal() {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
-      // @ts-ignore
-      if (typeof window !== "undefined" && window.lenis) {
-        // @ts-ignore
-        window.lenis.stop();
+      if (
+        typeof window !== "undefined" &&
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+      ) {
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.stop();
       }
     } else {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
-      // @ts-ignore
-      if (typeof window !== "undefined" && window.lenis) {
-        // @ts-ignore
-        window.lenis.start();
+      if (
+        typeof window !== "undefined" &&
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+      ) {
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.start();
       }
     }
     return () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
-      // @ts-ignore
-      if (typeof window !== "undefined" && window.lenis) {
-        // @ts-ignore
-        window.lenis.start();
+      if (
+        typeof window !== "undefined" &&
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+      ) {
+        (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis?.start();
       }
     };
   }, [isModalOpen]);
@@ -349,7 +352,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-zinc-800 rounded-3xl pb-12">
             <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6">
-              <Users className="w-8 h-8 text-zinc-600" />
+              <Users className="w-8 h-8 text-zinc-800 font-semibold" />
             </div>
             <h3 className="text-xl font-bold mb-2">No vehicles available</h3>
             <p className="text-zinc-500 max-w-sm mb-6">
@@ -360,7 +363,7 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
               onClick={() => {
                 setLocalPassengers("30");
               }}
-              className="bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-3 px-6 rounded-full transition-colors text-sm"
+              className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3 px-6 rounded-full transition-colors text-sm"
             >
               Reset Passengers
             </button>

@@ -22,7 +22,6 @@ export function useIsMobile() {
       mounted = false;
       mql.removeEventListener("change", onChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return !!isMobile;
