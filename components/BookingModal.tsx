@@ -29,13 +29,28 @@ export function BookingModal() {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.lenis) {
+        // @ts-ignore
+        window.lenis.stop();
+      }
     } else {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.lenis) {
+        // @ts-ignore
+        window.lenis.start();
+      }
     }
     return () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.lenis) {
+        // @ts-ignore
+        window.lenis.start();
+      }
     };
   }, [isModalOpen]);
 
@@ -245,7 +260,10 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
     });
 
     return (
-      <div className="flex-1 p-8 md:p-12 overflow-y-auto w-full flex flex-col relative">
+      <div
+        className="flex-1 p-8 md:p-12 overflow-y-auto overscroll-contain w-full flex flex-col relative"
+        data-lenis-prevent="true"
+      >
         <button
           onClick={handleClose}
           className="absolute top-8 right-8 z-50 w-12 h-12 bg-zinc-900/50 hover:bg-zinc-800 backdrop-blur-md rounded-full flex items-center justify-center text-zinc-400 hover:text-white transition-all border border-zinc-800"
@@ -363,7 +381,8 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
 
       {/* Left Column: Your Selection (The "Cart") */}
       <div
-        className={`flex-1 p-6 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-zinc-900 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 2 ? "hidden md:block" : "block"}`}
+        className={`flex-1 p-6 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-zinc-900 overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 2 ? "hidden md:block" : "block"}`}
+        data-lenis-prevent="true"
       >
         <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 tracking-tight">Chosen Bus</h2>
 
@@ -539,7 +558,8 @@ function BookingModalContent({ handleClose }: { handleClose: () => void }) {
 
       {/* Right Column: Finalize Request (The Form) */}
       <div
-        className={`w-full md:w-[450px] bg-zinc-900/50 p-6 sm:p-8 md:p-12 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 1 ? "hidden md:block" : "block"}`}
+        className={`w-full md:w-[450px] bg-zinc-900/50 p-6 sm:p-8 md:p-12 overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-4 [&::-webkit-scrollbar-thumb]:bg-zinc-800/80 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700/80 [&::-webkit-scrollbar-thumb]:rounded-full ${mobilePage === 1 ? "hidden md:block" : "block"}`}
+        data-lenis-prevent="true"
       >
         {showSuccess ? (
           <motion.div

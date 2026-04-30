@@ -8,7 +8,7 @@ import { fleetData } from "@/lib/data";
 import { useBooking } from "@/lib/BookingContext";
 
 export function Fleet() {
-  const { targetBusId, setTargetBusId, setIsModalOpen, setSelectedBusForBooking } = useBooking();
+  const { targetBusId, setTargetBusId, setIsModalOpen, setSelectedBusForBooking, isModalOpen } = useBooking();
   const [isWeekly, setIsWeekly] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [direction, setDirection] = useState(0);
@@ -63,13 +63,33 @@ export function Fleet() {
   useEffect(() => {
     if (selectedBus) {
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "hidden";
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.lenis) {
+        // @ts-ignore
+        window.lenis.stop();
+      }
+    } else if (!isModalOpen) {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.lenis) {
+        // @ts-ignore
+        window.lenis.start();
+      }
     }
+
     return () => {
-      document.body.style.overflow = "auto";
+      // Don't arbitrarily clear the lock if the booking modal is open
+      if (!isModalOpen && !selectedBus) {
+        // @ts-ignore
+        if (typeof window !== "undefined" && window.lenis) {
+          // @ts-ignore
+          window.lenis.start();
+        }
+      }
     };
-  }, [selectedBus]);
+  }, [selectedBus, isModalOpen]);
 
   return (
     <section
@@ -317,6 +337,7 @@ export function Fleet() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
                 className="flex-1 min-h-0 overflow-y-auto w-full"
+                data-lenis-prevent="true"
               >
                 <div className="p-6 sm:p-8 md:p-12 flex flex-col justify-start md:justify-center min-h-full">
                   <div className="mb-6 sm:mb-8">
