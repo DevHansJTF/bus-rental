@@ -115,7 +115,7 @@ export function Fleet() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg px-4"
+            className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg px-4 max-w-2xl mx-auto md:text-center text-justify"
           >
             Find the perfect ride gracefully tailored to your needs.
           </motion.p>
@@ -274,7 +274,7 @@ export function Fleet() {
                           </div>
                           <div className="flex flex-col items-center text-center gap-2 text-zinc-500 dark:text-zinc-400">
                             <Wind className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
-                            <span className="text-xs font-medium">{bus.specs.ac}</span>
+                            <span className="text-xs font-medium whitespace-nowrap">{bus.specs.ac}</span>
                           </div>
                         </div>
 
@@ -353,7 +353,7 @@ export function Fleet() {
                     </p>
                   </div>
 
-                  <p className="text-sm sm:text-base text-zinc-800 font-semibold dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8">
+                  <p className="text-sm sm:text-base text-zinc-800 font-semibold dark:text-zinc-400 leading-relaxed mb-6 sm:mb-8 text-justify">
                     {selectedBus.description} This vehicle is meticulously maintained and features premium amenities
                     ensuring a comfortable journey for your entire group.
                   </p>
@@ -374,7 +374,9 @@ export function Fleet() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Climate Control</p>
-                        <p className="font-bold text-zinc-900 dark:text-white">{selectedBus.specs.ac}</p>
+                        <p className="font-bold text-sm sm:text-base whitespace-nowrap text-zinc-900 dark:text-white">
+                          {selectedBus.specs.ac}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
