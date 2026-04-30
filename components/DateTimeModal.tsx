@@ -124,7 +124,7 @@ export function DateTimeModal({ isOpen, onClose, onSelect, initialDate, minDate,
                   <button
                     onClick={() => selectedDate && setStep("time")}
                     disabled={!selectedDate}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${step === "time" ? "bg-white dark:bg-zinc-800 shadow-sm text-zinc-900 dark:text-white" : "text-zinc-400 dark:text-zinc-600"} ${!selectedDate && "opacity-50 cursor-not-allowed"}`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${step === "time" ? "bg-white dark:bg-zinc-800 shadow-sm text-zinc-900 dark:text-white" : "text-zinc-400 dark:text-zinc-800 font-semibold"} ${!selectedDate && "opacity-50 cursor-not-allowed"}`}
                   >
                     <Clock className="w-3.5 h-3.5" /> Time
                   </button>
@@ -156,7 +156,8 @@ export function DateTimeModal({ isOpen, onClose, onSelect, initialDate, minDate,
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
-                      className="h-[300px] overflow-y-auto pr-2 custom-scrollbar"
+                      className="h-[300px] overflow-y-auto overscroll-contain pr-2 custom-scrollbar"
+                      data-lenis-prevent="true"
                     >
                       <div className="grid grid-cols-3 gap-2">
                         {generateTimeSlots().map((slot, i) => {

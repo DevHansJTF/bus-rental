@@ -55,7 +55,7 @@ export function Navbar() {
               <li key={link.name}>
                 <a
                   href={link.href}
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors text-sm font-medium tracking-wide relative group"
+                  className="text-zinc-800 font-semibold dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors text-sm font-medium tracking-wide relative group"
                 >
                   {link.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-zinc-900 dark:bg-zinc-100 transition-all group-hover:w-full"></span>

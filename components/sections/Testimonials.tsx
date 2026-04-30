@@ -39,7 +39,7 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center px-4 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-[0.2em] mb-6 shadow-sm"
+          className="inline-flex items-center px-4 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 font-semibold dark:text-zinc-400 text-xs font-bold uppercase tracking-[0.2em] mb-6 shadow-sm"
         >
           Customer Feedback
         </motion.div>

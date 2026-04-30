@@ -43,7 +43,7 @@ export function CTAFooter() {
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-zinc-950 px-10 py-5 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl w-fit inline-flex items-center gap-2"
+              className="bg-white text-zinc-900 px-10 py-5 rounded-2xl font-bold text-lg transition-all shadow-xl hover:shadow-2xl w-fit inline-flex items-center gap-2"
             >
               Book Your Ride
             </motion.button>

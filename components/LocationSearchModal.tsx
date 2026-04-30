@@ -114,7 +114,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
               </div>
 
               {/* Results */}
-              <div className="p-4 overflow-y-auto flex-1 h-[400px]">
+              <div className="p-4 overflow-y-auto overscroll-contain flex-1 h-[400px]" data-lenis-prevent="true">
                 {query.trim().length > 0 && (
                   <button
                     onClick={() => {
@@ -158,7 +158,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, initialValue }:
                         className="w-full text-left p-4 rounded-2xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors flex items-start gap-4 group"
                       >
                         <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-white dark:group-hover:bg-black transition-colors shadow-sm">
-                          <MapPin className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" />
+                          <MapPin className="w-4 h-4 text-zinc-400 group-hover:text-zinc-800 font-semibold dark:group-hover:text-zinc-300 transition-colors" />
                         </div>
                         <div className="flex flex-col">
                           <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{item.name}</span>

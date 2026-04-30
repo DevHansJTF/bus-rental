@@ -11,7 +11,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    // @ts-ignore
+    // @ts-expect-error - Adding lenis to window for global access
     window.lenis = lenis;
 
     let rafId: number;
@@ -26,8 +26,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
-      // @ts-ignore
-      delete window.lenis;
+      // @ts-expect-error - Removing lenis from window
+      delete (window as Window & { lenis?: unknown }).lenis;
     };
   }, []);
 

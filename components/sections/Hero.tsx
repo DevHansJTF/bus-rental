@@ -125,24 +125,23 @@ export function Hero() {
       className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden min-h-[95vh] flex items-center bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300"
     >
       {/* Background with softer overlay */}
-      <motion.div
-        style={{ y, scale }}
-        className="absolute inset-x-0 top-0 h-[60vh] lg:h-[75vh] w-full transform-gpu origin-top rounded-b-[3rem] lg:rounded-b-[5rem] overflow-hidden"
-      >
-        <Image
-          src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2938&auto=format&fit=crop"
-          alt="Premium comfortable bus interior"
-          fill
-          className="object-cover object-center"
-          priority
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-x-0 top-0 h-[60vh] lg:h-[75vh] w-full overflow-hidden">
+        <motion.div style={{ y, scale }} className="absolute inset-0 transform-gpu origin-top">
+          <Image
+            src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2938&auto=format&fit=crop"
+            alt="Premium comfortable bus interior"
+            fill
+            className="object-cover object-center"
+            priority
+            referrerPolicy="no-referrer"
+          />
+        </motion.div>
         <motion.div
           style={{ opacity }}
-          className="absolute inset-0 bg-zinc-100 dark:bg-black mix-blend-multiply dark:mix-blend-multiply transition-colors"
+          className="absolute inset-0 bg-white/60 dark:bg-black/60 transition-colors"
         ></motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-50 dark:from-zinc-950 via-zinc-50/80 dark:via-zinc-950/80 to-transparent transition-colors"></div>
-      </motion.div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -164,7 +163,7 @@ export function Hero() {
               className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-zinc-900 dark:text-white leading-[1.05] tracking-tight mb-4 sm:mb-6 transition-colors"
             >
               Elevate your <br className="hidden sm:block" />
-              <span className="text-zinc-600 dark:text-zinc-400 transition-colors">group journey.</span>
+              <span className="text-zinc-800 font-semibold dark:text-zinc-400 transition-colors">group journey.</span>
             </motion.h1>
 
             <motion.p
@@ -230,7 +229,7 @@ export function Hero() {
           >
             <div
               id="booking-console"
-              className="bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors"
+              className="bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] dark:shadow-black/20 relative overflow-hidden group transition-colors"
             >
               <div className="flex items-center justify-between mb-6 sm:mb-8">
                 <h3 className="font-heading text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
@@ -248,11 +247,11 @@ export function Hero() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="relative group/input">
                     <div
-                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-400 dark:text-zinc-500 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"}`}
+                      className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isPassengerInvalid ? "text-red-500" : "text-zinc-500 dark:text-zinc-400 group-focus-within/input:text-zinc-900 dark:group-focus-within/input:text-zinc-100 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"}`}
                     >
                       <Users className="w-5 h-5" />
                     </div>
-                    <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500">
+                    <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-500 dark:text-zinc-400">
                       Passengers
                     </label>
                     <input
@@ -267,7 +266,7 @@ export function Hero() {
                     {passengers && (
                       <button
                         type="button"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20"
                         onClick={() => setPassengers("")}
                       >
                         <X className="w-3.5 h-3.5" />
@@ -281,10 +280,10 @@ export function Hero() {
                       onClick={() => setShowLocationModal(true)}
                       className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <MapPin className="w-5 h-5" />
                       </div>
-                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-500 dark:text-zinc-400 z-10 pointer-events-none">
                         Pickup
                       </label>
                       <div
@@ -294,7 +293,7 @@ export function Hero() {
                       </div>
                       {location && (
                         <div
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
                             setLocation("");
@@ -328,10 +327,10 @@ export function Hero() {
                       onClick={() => setShowDepartureModal(true)}
                       className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <Calendar className="w-5 h-5" />
                       </div>
-                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-500 dark:text-zinc-400 z-10 pointer-events-none">
                         Departure
                       </label>
                       <div
@@ -341,7 +340,7 @@ export function Hero() {
                       </div>
                       {startDate && (
                         <div
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
                             setStartDate(null);
@@ -359,10 +358,10 @@ export function Hero() {
                       onClick={() => setShowReturnModal(true)}
                       className="w-full relative text-left bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl sm:rounded-2xl pt-6 pb-2.5 pl-12 pr-4 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/5 dark:focus:ring-zinc-100/5 focus:border-zinc-900 dark:focus:border-zinc-100"
                     >
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors z-10 pointer-events-none">
                         <Calendar className="w-5 h-5" />
                       </div>
-                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-400 dark:text-zinc-500 z-10 pointer-events-none">
+                      <label className="absolute left-12 top-2 text-[10px] uppercase font-bold tracking-widest text-zinc-500 dark:text-zinc-400 z-10 pointer-events-none">
                         Return
                       </label>
                       <div
@@ -372,7 +371,7 @@ export function Hero() {
                       </div>
                       {endDate && (
                         <div
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:text-red-400 dark:hover:bg-red-500/10 rounded-full p-1.5 transition-all z-20 cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
                             setEndDate(null);
