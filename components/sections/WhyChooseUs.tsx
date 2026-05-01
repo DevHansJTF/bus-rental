@@ -37,7 +37,7 @@ const reasons = [
 
 export function WhyChooseUs() {
   return (
-    <section id="about" className="py-32 bg-transparent relative z-10 overflow-visible">
+    <section id="about" className="py-32 bg-transparent relative z-10 overflow-x-clip">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
           {/* Left side fixed header approach */}
