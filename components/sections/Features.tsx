@@ -28,7 +28,7 @@ const features = [
     description:
       "Ergonomic seating, refined climate control, and unmatched legroom. We prioritize your well-being with meticulously maintained fleets so you can arrive relaxed, refreshed, and ready.",
     icon: Bus,
-    image: "/premium-comfort.png",
+    image: "/premium-comfort.jpg",
   },
 ];
 
@@ -38,7 +38,7 @@ export function Features() {
   return (
     <section
       id="features"
-      className="py-24 md:py-32 bg-zinc-50 dark:bg-zinc-950 relative z-20 overflow-visible transition-colors duration-300"
+      className="py-24 md:py-32 bg-zinc-50 dark:bg-zinc-950 relative z-20 overflow-x-clip transition-colors duration-300"
       ref={containerRef}
     >
       {/* Background abstract gradients and textures */}
