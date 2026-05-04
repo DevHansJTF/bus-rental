@@ -29,9 +29,6 @@ const reviews = [
 ];
 
 export function Testimonials() {
-  // Duplicate reviews for seamless infinite scroll
-  const marqueeReviews = [...reviews, ...reviews, ...reviews];
-
   return (
     <section className="py-24 bg-zinc-50 dark:bg-zinc-950 relative z-10 overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
@@ -55,49 +52,55 @@ export function Testimonials() {
       </div>
 
       {/* Infinite Marquee Container */}
-      <div className="relative w-full flex overflow-x-hidden group/marquee py-4">
+      <div className="relative w-full flex overflow-hidden group/marquee py-4">
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-50 dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-50 dark:from-zinc-950 to-transparent z-10 pointer-events-none"></div>
 
-        <div className="flex w-max animate-marquee gap-6 md:gap-8 px-4">
-          {marqueeReviews.map((review, index) => (
-            <div
-              key={index}
-              className="w-[350px] md:w-[400px] shrink-0 bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 flex flex-col relative overflow-hidden transition-all duration-500 hover:shadow-xl dark:shadow-none hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-zinc-700"
-            >
-              <div className="flex justify-between items-start mb-6">
-                <Quote className="w-10 h-10 fill-current text-zinc-200 dark:text-zinc-800" />
-                <div className="flex text-amber-400">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${i < review.rating ? "fill-current" : "fill-zinc-100 dark:fill-zinc-800 text-zinc-100 dark:text-zinc-800"}`}
-                    />
-                  ))}
-                </div>
-              </div>
+        <div className="flex w-[max-content] animate-marquee">
+          {[...Array(3)].map((_, arrayIndex) => (
+            <div key={arrayIndex} className="flex shrink-0 gap-6 md:gap-8 pl-6 md:pl-8">
+              {reviews.map((review, index) => (
+                <div
+                  key={`${arrayIndex}-${index}`}
+                  className="w-[350px] md:w-[400px] shrink-0 bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 flex flex-col relative overflow-hidden transition-all duration-500 hover:shadow-xl dark:shadow-none hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-zinc-700"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <Quote className="w-10 h-10 fill-current text-zinc-200 dark:text-zinc-800" />
+                    <div className="flex text-amber-400">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${i < review.rating ? "fill-current" : "fill-zinc-100 dark:fill-zinc-800 text-zinc-100 dark:text-zinc-800"}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
 
-              <p className="text-zinc-700 dark:text-zinc-300 flex-grow mb-10 text-lg font-medium leading-relaxed">
-                &quot;{review.text}&quot;
-              </p>
-
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800">
-                  <Image
-                    src={review.image}
-                    alt={review.name}
-                    fill
-                    className="object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-zinc-900 dark:text-white text-base tracking-tight">{review.name}</h4>
-                  <p className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-0.5">
-                    {review.role}
+                  <p className="text-zinc-700 dark:text-zinc-300 flex-grow mb-10 text-lg font-medium leading-relaxed">
+                    &quot;{review.text}&quot;
                   </p>
+
+                  <div className="flex items-center gap-4 mt-auto">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800">
+                      <Image
+                        src={review.image}
+                        alt={review.name}
+                        fill
+                        className="object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-zinc-900 dark:text-white text-base tracking-tight">
+                        {review.name}
+                      </h4>
+                      <p className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-0.5">
+                        {review.role}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           ))}
         </div>
