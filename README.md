@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Apex Bus Rental
 
-## Getting Started
+A modern transportation booking and inquiry platform built with responsive frontend architecture, interactive booking workflows, and user-focused UI/UX design to deliver a seamless and professional rental experience.
 
-First, run the development server:
+---
 
-```bash
+## Overview
+
+Apex Bus Rental is a modern web application designed for transportation and bus rental services, allowing users to browse available vehicles, select trip details, and submit booking inquiries through an intuitive and responsive interface.
+
+The platform focuses on clean layouts, structured navigation, and smooth user interactions to create a streamlined booking experience optimized for both desktop and mobile users. The project emphasizes usability, responsive design, and scalable frontend development practices.
+
+---
+
+## Features
+
+* Interactive booking and inquiry workflow
+* Dynamic vehicle selection based on trip requirements
+* Responsive mobile-first user interface
+* Smooth scrolling and modern UI interactions
+* Structured form handling and inquiry management
+* Modular and reusable frontend components
+* Responsive layouts optimized for desktop and mobile devices
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* Next.js
+* React
+* TypeScript
+
+### Styling & UI
+
+* Tailwind CSS
+* Tailwind Merge
+* clsx
+* tw-animate-css
+* Lucide React
+
+### Animations & UX
+
+* Framer Motion
+* Lenis
+
+### Utilities
+
+* React Datepicker
+* Nodemailer
+* next-themes
+
+---
+
+## Purpose
+
+This project was developed to explore modern frontend development, responsive UI/UX design, and interactive booking workflows for transportation service platforms using scalable component-based architecture.
+
+---
+
+## Installation
+
+```bash id="0z6rqp"
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
